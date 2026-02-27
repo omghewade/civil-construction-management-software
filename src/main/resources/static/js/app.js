@@ -1,7 +1,7 @@
 // ============================================================
 // CivilTrack Enterprise Frontend v3.0  (AI Edition)
 // ============================================================
-const AI_API_KEY = 'AIzaSyBNtaEhILHvHGyXpfWKTtegqHXMpvS8FHw';
+const AI_API_KEY = '';
 const AI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${AI_API_KEY}`;
 
 async function callAI(prompt, { json = false } = {}) {
