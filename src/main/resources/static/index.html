@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivilTrack - Construction Real-Time Monitoring</title>
+    <meta name="description"
+        content="Enterprise construction project management platform for real-time tracking of projects, tasks, resources, and site conditions.">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <link rel="stylesheet" href="/css/style.css?v=3">
+</head>
+
+<body>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="flex-center">
+        <div class="login-container glass-card">
+            <div class="login-header">
+                <div class="logo"><i class='bx bxs-building-house'></i> CivilTrack</div>
+                <h1>Welcome Back</h1>
+                <p class="subtitle">Sign in to your construction management platform</p>
+            </div>
+            <div id="login-error" class="error-text hidden"></div>
+            <form id="login-form">
+                <div class="input-group">
+                    <label>Username</label>
+                    <div class="input-icon">
+                        <i class='bx bx-user'></i>
+                        <input type="text" id="login-username" placeholder="Enter username" autocomplete="username"
+                            required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <div class="input-icon">
+                        <i class='bx bx-lock-alt'></i>
+                        <input type="password" id="login-password" placeholder="Enter password"
+                            autocomplete="current-password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" id="login-btn" style="margin-top:0.5rem;">
+                    <i class='bx bx-log-in'></i> Sign In
+                </button>
+            </form>
+            <p style="text-align:center; margin-top:1.2rem; font-size:0.78rem; color:var(--text-muted);">
+                Hint: admin/admin &bull; pm/pm &bull; engineer/engineer
+            </p>
+        </div>
+    </div>
+
+    <!-- APP SHELL -->
+    <div id="app-screen" class="hidden layout-main">
+
+        <!-- ========== SIDEBAR ========== -->
+        <aside class="sidebar glass-panel">
+            <div class="sidebar-header">
+                <i class='bx bxs-building-house logo-icon'></i>
+                <span class="logo-text">CivilTrack</span>
+            </div>
+            <nav class="nav-menu">
+                <span class="nav-section-label">Overview</span>
+                <a href="#" class="nav-item active" data-view="dashboard" id="nav-dashboard">
+                    <i class='bx bx-grid-alt'></i> Dashboard
+                </a>
+                <a href="#" class="nav-item" data-view="analytics" id="nav-analytics">
+                    <i class='bx bx-bar-chart-alt-2'></i> Analytics
+                </a>
+                <span class="nav-section-label" style="margin-top:0.5rem;">Projects</span>
+                <a href="#" class="nav-item" data-view="projects" id="nav-projects">
+                    <i class='bx bx-folder-open'></i> Projects
+                </a>
+                <a href="#" class="nav-item" data-view="tasks" id="nav-tasks">
+                    <i class='bx bx-task'></i> Tasks
+                </a>
+                <a href="#" class="nav-item" data-view="gantt" id="nav-gantt">
+                    <i class='bx bx-slider-alt'></i> Gantt Chart
+                </a>
+                <span class="nav-section-label" style="margin-top:0.5rem;">Resources</span>
+                <a href="#" class="nav-item" data-view="resources" id="nav-resources">
+                    <i class='bx bx-box'></i> Resources
+                </a>
+                <a href="#" class="nav-item" data-view="issues" id="nav-issues">
+                    <i class='bx bx-error-alt'></i> Issues / Risks
+                    <span class="nav-badge" id="issues-badge" style="display:none;">0</span>
+                </a>
+                <a href="#" class="nav-item" data-view="gallery" id="nav-gallery">
+                    <i class='bx bx-images'></i> 3D Gallery
+                </a>
+                <span class="nav-section-label" style="margin-top:0.5rem;">Materials</span>
+                <a href="#" class="nav-item" data-view="material-grades" id="nav-material-grades">
+                    <i class='bx bx-layer'></i> Material Grades
+                </a>
+                <span class="nav-section-label" style="margin-top:0.5rem;">Intelligence</span>
+                <a href="#" class="nav-item" data-view="ai-decisions" id="nav-ai-decisions">
+                    <i class='bx bx-brain'></i> AI Decisions
+                </a>
+                <a href="#" class="nav-item" data-view="bio-cement" id="nav-bio-cement">
+                    <i class='bx bx-leaf'></i> Bio-Cement Lab
+                </a>
+                <span class="nav-section-label" style="margin-top:0.5rem;">Admin</span>
+                <a href="#" class="nav-item" data-view="users" id="nav-users" class="admin-only">
+                    <i class='bx bx-group'></i> User Management
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="avatar"><i class='bx bxs-user'></i></div>
+                <div class="user-info">
+                    <h4 id="user-name-display">—</h4>
+                    <span id="user-role-display">—</span>
+                </div>
+                <button class="btn-icon" id="logout-btn" data-tip="Logout" title="Logout"><i
+                        class='bx bx-log-out'></i></button>
+            </div>
+        </aside>
+
+        <!-- ========== MAIN CONTENT ========== -->
+        <main class="main-content">
+
+            <!-- TOP BAR -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <h1 id="page-title">Dashboard</h1>
+                    <div class="search-bar-wrapper">
+                        <i class='bx bx-search'></i>
+                        <input type="text" id="global-search" placeholder="Search projects, tasks... (Ctrl+K)">
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn btn-secondary" id="refresh-btn" data-tip="Refresh (F5)">
+                        <i class='bx bx-refresh'></i> Refresh
+                    </button>
+                    <button class="btn btn-secondary" id="ai-report-btn" onclick="generatePortfolioReport()"
+                        data-tip="AI Portfolio Report">
+                        <i class='bx bx-analyse'></i> AI Report
+                    </button>
+                    <button class="btn btn-primary" id="new-project-btn">
+                        <i class='bx bx-plus'></i> New Project
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===== DASHBOARD VIEW ===== -->
+            <div id="view-dashboard" class="view-content">
+                <div class="stats-grid" style="margin-bottom:1.5rem;">
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon bg-blue"><i class='bx bx-folder-open'></i></div>
+                        <div class="stat-details">
+                            <h3>Total Projects</h3>
+                            <h2 id="stat-projects" class="counting">0</h2>
+                            <div class="stat-change" id="stat-projects-sub"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon bg-green"><i class='bx bx-check-circle'></i></div>
+                        <div class="stat-details">
+                            <h3>Avg Completion</h3>
+                            <h2 id="stat-completion">0%</h2>
+                            <div class="stat-change" id="stat-completion-sub"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon bg-orange"><i class='bx bx-rupee'></i></div>
+                        <div class="stat-details">
+                            <h3>Total Budget</h3>
+                            <h2 id="stat-budget">₹0</h2>
+                            <div class="stat-change" id="stat-budget-sub"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon bg-red"><i class='bx bx-time-five'></i></div>
+                        <div class="stat-details">
+                            <h3>Delayed Tasks</h3>
+                            <h2 id="stat-delayed">0</h2>
+                            <div class="stat-change" id="stat-delayed-sub"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon bg-purple"><i class='bx bx-heart-circle'></i></div>
+                        <div class="stat-details">
+                            <h3>Portfolio Health</h3>
+                            <h2 id="stat-health">—</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon bg-orange"><i class='bx bx-cloud'></i></div>
+                        <div class="stat-details">
+                            <h3>Live Weather</h3>
+                            <h2 id="stat-weather">—</h2>
+                            <div class="stat-change" id="stat-weather-sub">Site Location</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="chart-container glass-card">
+                        <h3>Project Progress</h3>
+                        <canvas id="chart-progress"></canvas>
+                    </div>
+                    <div class="chart-container glass-card">
+                        <h3>Budget vs Actual Cost</h3>
+                        <canvas id="chart-budget"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== ANALYTICS VIEW ===== -->
+            <div id="view-analytics" class="view-content hidden">
+                <div class="analytics-grid">
+                    <div class="kpi-card glass-card">
+                        <div class="kpi-value" id="kpi-total-budget">₹0</div>
+                        <div class="kpi-label">Total Portfolio Budget</div>
+                    </div>
+                    <div class="kpi-card glass-card">
+                        <div class="kpi-value" id="kpi-spent">₹0</div>
+                        <div class="kpi-label">Total Spent To Date</div>
+                    </div>
+                    <div class="kpi-card glass-card">
+                        <div class="kpi-value" id="kpi-tasks">0</div>
+                        <div class="kpi-label">Total Tasks Tracked</div>
+                    </div>
+                    <div class="kpi-card glass-card">
+                        <div class="kpi-value" id="kpi-completion">0%</div>
+                        <div class="kpi-label">Overall Completion</div>
+                    </div>
+                </div>
+                <div class="dashboard-grid">
+                    <div class="chart-container glass-card">
+                        <h3>Task Status Breakdown</h3>
+                        <canvas id="chart-task-status"></canvas>
+                    </div>
+                    <div class="chart-container glass-card">
+                        <h3>Budget Utilization</h3>
+                        <canvas id="chart-budget-util"></canvas>
+                    </div>
+                </div>
+                <div class="glass-card" style="margin-top:1.2rem;">
+                    <div class="table-toolbar">
+                        <h3>Project Performance Summary</h3>
+                        <button class="btn btn-secondary btn-sm" onclick="exportAnalyticsCSV()">
+                            <i class='bx bx-export'></i> Export CSV
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Project</th>
+                                    <th>Budget</th>
+                                    <th>Spent</th>
+                                    <th>Utilization</th>
+                                    <th>Tasks</th>
+                                    <th>Progress</th>
+                                    <th>Health</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== PROJECTS VIEW ===== -->
+            <div id="view-projects" class="view-content hidden">
+                <div class="glass-card">
+                    <div class="table-toolbar">
+                        <h3>All Projects</h3>
+                        <div style="display:flex; gap:0.5rem;">
+                            <button class="btn btn-secondary btn-sm" onclick="exportProjectsCSV()">
+                                <i class='bx bx-export'></i> Export CSV
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>Status</th>
+                                    <th>Budget</th>
+                                    <th>Progress</th>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Health</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="projects-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TASKS VIEW ===== -->
+            <div id="view-tasks" class="view-content hidden">
+                <div class="filters-bar glass-card" style="margin-bottom:1.2rem;">
+                    <select id="task-project-filter" class="form-select" style="width:auto; flex:1; max-width:320px;">
+                        <option value="">Select Project</option>
+                    </select>
+                    <select id="task-status-filter" class="form-select" style="width:auto;">
+                        <option value="">All Statuses</option>
+                        <option value="NOT_STARTED">Not Started</option>
+                        <option value="IN_PROGRESS">In Progress</option>
+                        <option value="COMPLETED">Completed</option>
+                        <option value="DELAYED">Delayed</option>
+                    </select>
+                    <button class="btn btn-primary btn-sm" id="add-task-btn"><i class='bx bx-plus'></i> Add
+                        Task</button>
+                    <button class="btn btn-secondary btn-sm" onclick="exportTasksCSV()"><i class='bx bx-export'></i>
+                        CSV</button>
+                </div>
+                <div id="task-grid-container" class="task-grid"></div>
+            </div>
+
+            <!-- ===== GANTT CHART VIEW ===== -->
+            <div id="view-gantt" class="view-content hidden">
+                <div class="filters-bar glass-card" style="margin-bottom:1.2rem;">
+                    <select id="gantt-project-filter" class="form-select" style="width:auto;flex:1;max-width:320px;">
+                        <option value="">Select Project</option>
+                    </select>
+                </div>
+                <div class="glass-card gantt-container" id="gantt-wrapper">
+                    <canvas id="chart-gantt" style="max-height:500px;"></canvas>
+                </div>
+            </div>
+
+            <!-- ===== RESOURCES VIEW ===== -->
+            <div id="view-resources" class="view-content hidden">
+                <div class="filters-bar glass-card" style="margin-bottom:1.2rem;">
+                    <select id="resource-project-filter" class="form-select" style="width:auto;flex:1;max-width:320px;">
+                        <option value="">Select Project</option>
+                    </select>
+                    <button class="btn btn-secondary btn-sm" onclick="exportResourcesCSV()"><i class='bx bx-export'></i>
+                        Export CSV</button>
+                </div>
+                <div id="resource-stats" class="resource-grid hidden">
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon bg-blue"><i class='bx bx-buildings'></i></div>
+                        <div class="stat-details">
+                            <h3>Equipment In Use</h3>
+                            <h2 id="res-equip-inuse">0</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon bg-orange"><i class='bx bx-group'></i></div>
+                        <div class="stat-details">
+                            <h3>Total Workers</h3>
+                            <h2 id="res-workers">0</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon bg-red"><i class='bx bx-package'></i></div>
+                        <div class="stat-details">
+                            <h3>Materials Low Stock</h3>
+                            <h2 id="res-low-stock">0</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-grid" id="resource-charts-row" style="margin-bottom:1.2rem;">
+                    <div class="chart-container glass-card hidden" id="equip-chart-card">
+                        <h3>Equipment Utilization</h3>
+                        <canvas id="chart-equipment"></canvas>
+                    </div>
+                    <div class="glass-card hidden" id="labor-table-card">
+                        <div class="table-toolbar">
+                            <h3>Labor Force & Wages</h3>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Count</th>
+                                    <th>Daily Wage</th>
+                                    <th>Days</th>
+                                    <th>Paid</th>
+                                    <th>Pending</th>
+                                </tr>
+                            </thead>
+                            <tbody id="labor-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="glass-card hidden" id="material-table-card">
+                    <div class="table-toolbar">
+                        <h3>Material Inventory</h3>
+                        <span style="font-size:0.75rem; color:var(--text-muted);">🔴 &lt;3d &nbsp; 🟡 &lt;7d &nbsp; 🟢
+                            Safe</span>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Material</th>
+                                <th>Available</th>
+                                <th>Daily Use</th>
+                                <th>Days Left</th>
+                                <th>Refill By</th>
+                            </tr>
+                        </thead>
+                        <tbody id="material-table-body"></tbody>
+                    </table>
+                </div>
+                <div id="resource-empty-state">
+                    <div class="empty-state glass-card"><i class='bx bx-box'></i>
+                        <p>Select a project to view site resources.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== ISSUES / RISKS VIEW ===== -->
+            <div id="view-issues" class="view-content hidden">
+                <div class="filters-bar glass-card" style="justify-content:space-between;">
+                    <select id="issue-project-filter" class="form-select" style="width:auto;flex:1;max-width:320px;">
+                        <option value="">Select Project</option>
+                    </select>
+                    <div style="display:flex;gap:0.5rem;">
+                        <button class="btn btn-danger btn-sm" id="report-issue-btn"><i class='bx bx-plus'></i> Report
+                            Issue</button>
+                        <button class="btn btn-secondary btn-sm" onclick="exportIssuesCSV()"><i
+                                class='bx bx-export'></i> Export CSV</button>
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Issue</th>
+                                    <th>Category</th>
+                                    <th>Severity</th>
+                                    <th>Status</th>
+                                    <th>Reported By</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="issues-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== 3D GALLERY VIEW ===== -->
+            <div id="view-gallery" class="view-content hidden">
+                <div class="filters-bar glass-card" style="margin-bottom:1.2rem;">
+                    <select id="gallery-project-filter" class="form-select" style="width:auto;flex:1;max-width:320px;">
+                        <option value="">Select Project</option>
+                    </select>
+                </div>
+                <div id="gallery-container" class="hidden">
+                    <div class="glass-card" style="padding:0;overflow:hidden;">
+                        <img id="gallery-image" src="" alt="Project 3D Render"
+                            style="width:100%;display:block;max-height:65vh;object-fit:cover;">
+                        <div style="padding:1.5rem; display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <h3 id="gallery-project-name" style="margin-bottom:0.3rem;"></h3>
+                                <p class="text-muted" style="font-size:0.85rem;">AI-generated ultra-realistic
+                                    architectural mockup simulating the site post-completion.</p>
+                            </div>
+                            <span class="badge status-completed" style="font-size:0.75rem;">AI Generated</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="gallery-empty-state">
+                    <div class="empty-state glass-card"><i class='bx bx-images'></i>
+                        <p>Select a project to view its 3D visualization.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== MATERIAL GRADES VIEW ===== -->
+            <div id="view-material-grades" class="view-content hidden">
+                <div class="mg-tabs glass-card" style="margin-bottom:1.2rem;">
+                    <button class="mg-tab active" data-tab="cement-grades"
+                        onclick="switchMGTab(this,'cement-grades')"><i class='bx bx-buildings'></i> Cement
+                        Grades</button>
+                    <button class="mg-tab" data-tab="steel-grades" onclick="switchMGTab(this,'steel-grades')"><i
+                            class='bx bx-shape-triangle'></i> Steel Grades</button>
+                    <button class="mg-tab" data-tab="aggregate-grades" onclick="switchMGTab(this,'aggregate-grades')"><i
+                            class='bx bx-layer'></i> Aggregates</button>
+                    <button class="mg-tab" data-tab="inventory-panel" onclick="switchMGTab(this,'inventory-panel')"><i
+                            class='bx bx-package'></i> Inventory Tracker</button>
+                </div>
+
+                <!-- CEMENT GRADES -->
+                <div id="cement-grades" class="mg-tab-content">
+                    <div class="grade-grid" id="cement-grade-cards"></div>
+                </div>
+
+                <!-- STEEL GRADES -->
+                <div id="steel-grades" class="mg-tab-content hidden">
+                    <div class="grade-grid" id="steel-grade-cards"></div>
+                </div>
+
+                <!-- AGGREGATE GRADES -->
+                <div id="aggregate-grades" class="mg-tab-content hidden">
+                    <div class="grade-grid" id="aggregate-grade-cards"></div>
+                </div>
+
+                <!-- INVENTORY TRACKER -->
+                <div id="inventory-panel" class="mg-tab-content hidden">
+                    <div class="glass-card" style="margin-bottom:1rem;">
+                        <div class="table-toolbar">
+                            <h3><i class='bx bx-package'></i> Site Inventory Tracker</h3>
+                            <div style="display:flex;gap:0.5rem;align-items:center;">
+                                <select id="inv-category" class="form-select" style="width:auto;">
+                                    <option value="all">All Materials</option>
+                                    <option value="cement">Cement Only</option>
+                                    <option value="steel">Steel Only</option>
+                                    <option value="aggregate">Aggregates Only</option>
+                                </select>
+                                <button class="btn btn-primary btn-sm" onclick="saveInventory()"><i
+                                        class='bx bx-save'></i> Save Inventory</button>
+                            </div>
+                        </div>
+                        <div id="inventory-table-wrapper"></div>
+                    </div>
+                    <div class="inv-summary-grid" id="inv-summary"></div>
+                    <div style="margin-top:1rem;">
+                        <button class="btn btn-secondary" onclick="generateReorderPlan()" id="ai-reorder-btn">
+                            <i class='bx bx-cart'></i> AI Reorder Plan
+                        </button>
+                        <div id="ai-reorder-result" style="margin-top:0.8rem;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== AI DECISIONS VIEW ===== -->
+            <div id="view-ai-decisions" class="view-content hidden">
+                <div class="ai-layout">
+                    <!-- Input parameters panel -->
+                    <div class="ai-input-panel glass-card">
+                        <h3 style="margin-bottom:1.2rem;"><i class='bx bx-slider'></i> Construction Parameters</h3>
+
+                        <div class="input-group">
+                            <label>Project Type</label>
+                            <select id="ai-project-type" class="form-select">
+                                <option value="residential">Residential Building</option>
+                                <option value="commercial">Commercial Building</option>
+                                <option value="industrial">Industrial Structure</option>
+                                <option value="bridge">Bridge / Flyover</option>
+                                <option value="dam">Dam / Retaining Wall</option>
+                                <option value="road">Road / Pavement</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Exposure Condition</label>
+                            <select id="ai-exposure" class="form-select">
+                                <option value="mild">Mild (Indoor / Protected)</option>
+                                <option value="moderate">Moderate (Outdoor / Humidity)</option>
+                                <option value="severe">Severe (Marine / Chemical)</option>
+                                <option value="v_severe">Very Severe (Coastal / Aggressive)</option>
+                                <option value="extreme">Extreme (Sulphate Attack Risk)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Required Concrete Strength (MPa)</label>
+                            <input type="number" id="ai-strength" class="form-control" value="25" min="10" max="60">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Seismic Zone</label>
+                            <select id="ai-seismic" class="form-select">
+                                <option value="1">Zone I – Very Low</option>
+                                <option value="2">Zone II – Low</option>
+                                <option value="3" selected>Zone III – Moderate</option>
+                                <option value="4">Zone IV – High</option>
+                                <option value="5">Zone V – Very High</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Structural Member Type</label>
+                            <select id="ai-member" class="form-select">
+                                <option value="slab">Slab</option>
+                                <option value="beam">Beam</option>
+                                <option value="column">Column</option>
+                                <option value="footing">Footing / Foundation</option>
+                                <option value="shear_wall">Shear Wall</option>
+                                <option value="retaining">Retaining Wall</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Average Site Temperature (°C)</label>
+                            <input type="number" id="ai-temp" class="form-control" value="30" min="-5" max="55">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Curing Method</label>
+                            <select id="ai-curing" class="form-select">
+                                <option value="water">Water Curing (Ponding / Spraying)</option>
+                                <option value="wet_burlap">Wet Burlap / Hessian</option>
+                                <option value="membrane">Membrane Curing Compound</option>
+                                <option value="steam">Steam Curing</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Floor Number (for Slab Interval)</label>
+                            <input type="number" id="ai-floor" class="form-control" value="1" min="1" max="50">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Sulphate Present in Soil / Water?</label>
+                            <select id="ai-sulphate" class="form-select">
+                                <option value="no">No</option>
+                                <option value="light">Light (Class 1)</option>
+                                <option value="moderate">Moderate (Class 2)</option>
+                                <option value="heavy">Heavy (Class 3-4)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Budget Priority</label>
+                            <select id="ai-budget-priority" class="form-select">
+                                <option value="balanced">Balanced</option>
+                                <option value="low_cost">Low Cost</option>
+                                <option value="high_performance">High Performance</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary btn-block" id="ai-analyze-btn" onclick="runAIDecision()"
+                            style="margin-top:0.8rem;">
+                            <i class='bx bx-analyse'></i> Generate Recommendations
+                        </button>
+                    </div>
+
+                    <!-- Output panel -->
+                    <div class="ai-output-panel" id="ai-output-panel">
+                        <div class="ai-placeholder glass-card" id="ai-placeholder">
+                            <i class='bx bx-brain'
+                                style="font-size:3rem;color:var(--accent-blue);margin-bottom:1rem;"></i>
+                            <h3>AI Decision Engine</h3>
+                            <p style="color:var(--text-muted);margin-top:0.5rem;">Fill in the parameters on the left and
+                                click <strong>Generate Recommendations</strong> to receive intelligent construction
+                                decisions.</p>
+                        </div>
+                        <div id="ai-results" class="hidden"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== BIO-CEMENT LAB VIEW ===== -->
+            <div id="view-bio-cement" class="view-content hidden">
+                <div class="bc-layout">
+                    <!-- Recipe selector -->
+                    <div class="bc-sidebar">
+                        <div class="glass-card" style="padding:1rem;margin-bottom:1rem;">
+                            <h3 style="margin-bottom:0.8rem;"><i class='bx bx-leaf'></i> Bio-Cement Types</h3>
+                            <div class="bc-recipe-list" id="bc-recipe-list"></div>
+                        </div>
+                        <div class="glass-card" style="padding:1rem;">
+                            <h4 style="margin-bottom:0.5rem;color:var(--text-secondary);"><i
+                                    class='bx bx-info-circle'></i> Why Bio-Cement?</h4>
+                            <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;">Bio-cement reduces CO₂
+                                emissions by up to 60% compared to OPC. It uses industrial by-products and biological
+                                processes to bind materials — a sustainable alternative for eco-conscious construction.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Detail + Calculator -->
+                    <div class="bc-main">
+                        <div id="bc-placeholder" class="glass-card bc-placeholder">
+                            <i class='bx bx-leaf' style="font-size:3rem;color:#10b981;margin-bottom:1rem;"></i>
+                            <h3>Select a Bio-Cement Type</h3>
+                            <p style="color:var(--text-muted);margin-top:0.5rem;">Choose from the left panel to view the
+                                recipe, material requirements, quality specs, and the batch quantity calculator.</p>
+                        </div>
+                        <div id="bc-detail" class="hidden">
+                            <!-- Recipe detail card -->
+                            <div class="glass-card" style="margin-bottom:1.2rem;" id="bc-recipe-card"></div>
+
+                            <!-- Calculator -->
+                            <div class="glass-card" style="margin-bottom:1.2rem;">
+                                <h3 style="margin-bottom:1rem;"><i class='bx bx-calculator'></i> Batch Quantity
+                                    Calculator</h3>
+                                <div class="input-row">
+                                    <div class="input-group">
+                                        <label>Target Output (kg)</label>
+                                        <input type="number" id="bc-target-kg" class="form-control" value="1000"
+                                            min="10" max="100000">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Number of Batches</label>
+                                        <input type="number" id="bc-batches" class="form-control" value="1" min="1"
+                                            max="100">
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="calculateBatchQuantities()"
+                                    style="margin-bottom:1rem;">
+                                    <i class='bx bx-calculator'></i> Calculate
+                                </button>
+                                <div id="bc-calc-result"></div>
+                            </div>
+
+                            <!-- Feasibility Checker -->
+                            <div class="glass-card">
+                                <h3 style="margin-bottom:0.5rem;"><i class='bx bx-check-shield'></i> Feasibility Checker
+                                </h3>
+                                <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1rem;">Enter the
+                                    quantities you currently have in stock. The system will check if you have enough to
+                                    produce your target batch.</p>
+                                <div id="bc-feasibility-inputs"></div>
+                                <button class="btn btn-secondary btn-sm" onclick="checkFeasibility()"
+                                    style="margin-top:0.8rem;">
+                                    <i class='bx bx-check-circle'></i> Check Feasibility
+                                </button>
+                                <div id="bc-feasibility-result" style="margin-top:1rem;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== USER MANAGEMENT VIEW ===== -->
+            <div id="view-users" class="view-content hidden">
+                <div class="glass-card">
+                    <div class="table-toolbar">
+                        <h3>Platform Users</h3>
+                        <span style="font-size:0.8rem; color:var(--text-muted);">Admin access only</span>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Username</th>
+                                    <th>Full Name</th>
+                                    <th>Role</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- ========== ACTIVITY SIDEBAR ========== -->
+        <aside class="activity-sidebar">
+            <div class="activity-header">
+                <h3><span class="live-indicator"></span> Live Activity</h3>
+                <button class="btn-icon" onclick="document.getElementById('activity-feed').innerHTML=''"
+                    data-tip="Clear">
+                    <i class='bx bx-trash'></i>
+                </button>
+            </div>
+            <div class="activity-feed" id="activity-feed"></div>
+        </aside>
+
+    </div><!-- End APP SHELL -->
+
+    <!-- ============================================================ -->
+    <!-- MODALS                                                        -->
+    <!-- ============================================================ -->
+
+    <!-- NEW / EDIT PROJECT MODAL -->
+    <div id="modal-project" class="modal-overlay hidden">
+        <div class="modal glass-card">
+            <div class="modal-header">
+                <h2 id="modal-project-title">New Project</h2>
+                <button class="close-modal" data-close="modal-project"><i class='bx bx-x'></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="project-edit-id">
+                <div class="input-group">
+                    <label>Project Name *</label>
+                    <input type="text" id="project-name" placeholder="e.g. Downtown Metro Tower" required>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Start Date *</label>
+                        <input type="date" id="project-start">
+                    </div>
+                    <div class="input-group">
+                        <label>End Date *</label>
+                        <input type="date" id="project-end">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Budget (₹) *</label>
+                        <input type="number" id="project-budget" placeholder="50000000" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Status</label>
+                        <select id="project-status">
+                            <option value="PLANNED">Planned</option>
+                            <option value="ONGOING">Ongoing</option>
+                            <option value="ON_HOLD">On Hold</option>
+                            <option value="COMPLETED">Completed</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea id="project-description" rows="3" placeholder="Brief project description..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Project Manager</label>
+                    <select id="project-manager"></select>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" data-close="modal-project">Cancel</button>
+                    <button class="btn btn-primary" id="save-project-btn"><i class='bx bx-save'></i> Save
+                        Project</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW / EDIT TASK MODAL -->
+    <div id="modal-task" class="modal-overlay hidden">
+        <div class="modal glass-card">
+            <div class="modal-header">
+                <h2 id="modal-task-title">Add Task</h2>
+                <button class="close-modal" data-close="modal-task"><i class='bx bx-x'></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="task-edit-id">
+                <div class="input-group">
+                    <label>Task Name *</label>
+                    <input type="text" id="task-name" placeholder="e.g. Foundation Excavation">
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Start Date</label>
+                        <input type="date" id="task-start">
+                    </div>
+                    <div class="input-group">
+                        <label>End Date</label>
+                        <input type="date" id="task-end">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Progress (%)</label>
+                        <input type="number" id="task-progress" min="0" max="100" value="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Estimated Cost (₹)</label>
+                        <input type="number" id="task-cost" min="0" value="0">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Status</label>
+                        <select id="task-status">
+                            <option value="NOT_STARTED">Not Started</option>
+                            <option value="IN_PROGRESS">In Progress</option>
+                            <option value="COMPLETED">Completed</option>
+                            <option value="DELAYED">Delayed</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Assign To</label>
+                        <select id="task-assignee"></select>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" data-close="modal-task">Cancel</button>
+                    <button class="btn btn-primary" id="save-task-btn"><i class='bx bx-save'></i> Save Task</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- UPDATE TASK PROGRESS MODAL (quick update) -->
+    <div id="modal-progress" class="modal-overlay hidden">
+        <div class="modal glass-card" style="max-width:420px;">
+            <div class="modal-header">
+                <h2>Update Task Progress</h2>
+                <button class="close-modal" data-close="modal-progress"><i class='bx bx-x'></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="progress-task-id">
+                <p id="progress-task-name" style="color:var(--text-secondary); margin-bottom:0.5rem;"></p>
+                <div class="input-group">
+                    <label>Progress: <span id="progress-value-label">0</span>%</label>
+                    <input type="range" id="progress-slider" min="0" max="100" value="0" style="cursor:pointer;">
+                </div>
+                <div class="input-group">
+                    <label>Actual Cost Incurred (₹)</label>
+                    <input type="number" id="progress-cost" placeholder="0" min="0">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" data-close="modal-progress">Cancel</button>
+                    <button class="btn btn-primary" id="save-progress-btn"><i class='bx bx-check'></i> Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REPORT ISSUE MODAL -->
+    <div id="modal-issue" class="modal-overlay hidden">
+        <div class="modal glass-card">
+            <div class="modal-header">
+                <h2>Report Site Issue</h2>
+                <button class="close-modal" data-close="modal-issue"><i class='bx bx-x'></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Issue Title *</label>
+                    <input type="text" id="issue-title" placeholder="Brief title of the issue">
+                </div>
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea id="issue-description" rows="3" placeholder="Detailed description..."></textarea>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Category</label>
+                        <select id="issue-category">
+                            <option value="SAFETY">Safety</option>
+                            <option value="QUALITY">Quality</option>
+                            <option value="DELAY">Delay</option>
+                            <option value="MATERIAL_SHORTAGE">Material Shortage</option>
+                            <option value="EQUIPMENT_FAILURE">Equipment Failure</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Severity</label>
+                        <select id="issue-severity">
+                            <option value="LOW">Low</option>
+                            <option value="MEDIUM">Medium</option>
+                            <option value="HIGH">High</option>
+                            <option value="CRITICAL">Critical</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" data-close="modal-issue">Cancel</button>
+                    <button class="btn btn-danger" id="save-issue-btn"><i class='bx bx-error-alt'></i> Submit
+                        Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI REPORT MODAL -->
+    <div id="modal-ai-report" class="modal-overlay hidden">
+        <div class="modal glass-card" style="max-width:720px;">
+            <div class="modal-header">
+                <h2 id="ai-report-modal-title"><i class='bx bx-analyse'></i> AI Report</h2>
+                <button class="close-modal" data-close="modal-ai-report"><i class='bx bx-x'></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="ai-report-content" class="ai-chat-box" style="max-height:480px;font-size:0.88rem;">
+                    Generating...</div>
+                <div class="modal-actions" style="margin-top:1rem;">
+                    <button class="btn btn-secondary" data-close="modal-ai-report">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONFIRM DELETE MODAL -->
+    <div id="modal-confirm" class="modal-overlay hidden">
+        <div class="modal glass-card confirm-modal">
+            <div class="modal-body">
+                <div class="confirm-icon">⚠️</div>
+                <h2 id="confirm-title">Are you sure?</h2>
+                <p class="confirm-text" id="confirm-message">This action cannot be undone.</p>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" data-close="modal-confirm">Cancel</button>
+                    <button class="btn btn-danger" id="confirm-action-btn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script src="/js/api.js?v=4"></script>
+    <script src="/js/app.js?v=4"></script>
+</body>
+
+</html>

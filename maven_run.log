@@ -1,0 +1,598 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------------< com.civil:demo >---------------------------
+[INFO] Building scheduler 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ war ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:4.0.3:run (default-cli) > test-compile @ demo >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ demo ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 6 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ demo ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ demo ---
+[INFO] skip non existing resourceDirectory D:\advance java\civil\demo\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ demo ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot:4.0.3:run (default-cli) < test-compile @ demo <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:4.0.3:run (default-cli) @ demo ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.3)
+
+2026-02-27T01:26:08.896+05:30  INFO 18400 --- [demo] [           main] c.civil.scheduler.SchedulerApplication   : Starting SchedulerApplication using Java 17.0.12 with PID 18400 (D:\advance java\civil\demo\target\classes started by ghewa in D:\advance java\civil\demo)
+2026-02-27T01:26:08.901+05:30  INFO 18400 --- [demo] [           main] c.civil.scheduler.SchedulerApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-02-27T01:26:09.806+05:30  INFO 18400 --- [demo] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-27T01:26:09.924+05:30  INFO 18400 --- [demo] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 108 ms. Found 10 JPA repository interfaces.
+2026-02-27T01:26:10.610+05:30  INFO 18400 --- [demo] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-02-27T01:26:10.624+05:30  INFO 18400 --- [demo] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-27T01:26:10.625+05:30  INFO 18400 --- [demo] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-02-27T01:26:10.698+05:30  INFO 18400 --- [demo] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1724 ms
+2026-02-27T01:26:10.879+05:30  INFO 18400 --- [demo] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-02-27T01:26:10.940+05:30  INFO 18400 --- [demo] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-02-27T01:26:11.495+05:30  INFO 18400 --- [demo] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-27T01:26:11.528+05:30  INFO 18400 --- [demo] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-02-27T01:26:11.710+05:30  INFO 18400 --- [demo] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1c411474
+2026-02-27T01:26:11.712+05:30  INFO 18400 --- [demo] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-02-27T01:26:11.823+05:30  INFO 18400 --- [demo] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/civil_tracking?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.42
+	Default catalog/schema: civil_tracking/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-02-27T01:26:13.042+05:30  INFO 18400 --- [demo] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-27T01:26:13.168+05:30  INFO 18400 --- [demo] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-27T01:26:13.257+05:30  INFO 18400 --- [demo] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-02-27T01:26:13.447+05:30  WARN 18400 --- [demo] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-27T01:26:13.551+05:30  INFO 18400 --- [demo] [           main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-02-27T01:26:13.551+05:30  WARN 18400 --- [demo] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+Hibernate: select count(*) from users u1_0
+2026-02-27T01:26:14.546+05:30  INFO 18400 --- [demo] [           main] o.s.b.w.a.WelcomePageHandlerMapping      : Adding welcome page: class path resource [static/index.html]
+2026-02-27T01:26:14.799+05:30  INFO 18400 --- [demo] [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2026-02-27T01:26:14.799+05:30  INFO 18400 --- [demo] [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@1911427a]]
+2026-02-27T01:26:14.800+05:30  INFO 18400 --- [demo] [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2026-02-27T01:26:14.824+05:30  INFO 18400 --- [demo] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-02-27T01:26:14.829+05:30  INFO 18400 --- [demo] [           main] c.civil.scheduler.SchedulerApplication   : Started SchedulerApplication in 6.501 seconds (process running for 6.982)
+2026-02-27T01:26:58.152+05:30  INFO 18400 --- [demo] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-02-27T01:26:58.152+05:30  INFO 18400 --- [demo] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-02-27T01:26:58.155+05:30  INFO 18400 --- [demo] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-02-27T01:27:14.804+05:30  INFO 18400 --- [demo] [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.username=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select al1_0.id,al1_0.action,al1_0.project_id,al1_0.task_id,al1_0.timestamp,al1_0.user_id from activity_logs al1_0 order by al1_0.timestamp desc limit ?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.project_id,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.project_id,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0 where p1_0.id=?
+Hibernate: select t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.project_id,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0 where p1_0.id=?
+Hibernate: select t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.project_id,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.project_id,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0
+Hibernate: SET FOREIGN_KEY_CHECKS = 0
+Hibernate: TRUNCATE TABLE sub_tasks
+Hibernate: TRUNCATE TABLE tasks
+Hibernate: TRUNCATE TABLE milestones
+Hibernate: TRUNCATE TABLE equipments
+Hibernate: TRUNCATE TABLE labor_force
+Hibernate: TRUNCATE TABLE materials
+Hibernate: TRUNCATE TABLE issues
+Hibernate: TRUNCATE TABLE projects
+Hibernate: SET FOREIGN_KEY_CHECKS = 1
+Hibernate: INSERT INTO projects (name, location, client, start_date, end_date, budget, status, completion_percentage) VALUES ('Downtown Metro Tower', 'Mumbai', 'Metro Corp', '2026-03-01', '2027-12-30', 50000000.0, 'ONGOING', 15.0), ('Riverside Bridge', 'Delhi', 'NHAI', '2026-01-15', '2026-10-30', 12000000.0, 'ONGOING', 45.0)
+Hibernate: INSERT INTO milestones (project_id, name, due_date, status) VALUES (1, 'Foundation Check', '2026-05-15', 'PENDING'), (1, 'Structure Complete', '2027-01-10', 'PENDING'), (2, 'Pillars Complete', '2026-04-20', 'COMPLETED')
+Hibernate: INSERT INTO tasks (project_id, name, engineer_id, start_date, deadline, estimated_cost, actual_cost, progress, status) VALUES (1, 'Excavation & Shoring', 3, '2026-03-01', '2026-04-15', 2500000.0, 1500000.0, 60, 'IN_PROGRESS'), (2, 'Concrete Pouring', 3, '2026-02-01', '2026-04-05', 4000000.0, 3800000.0, 90, 'IN_PROGRESS')
+Hibernate: INSERT INTO sub_tasks (task_id, name, progress, status) VALUES (1, 'Site Clearance', 100, 'COMPLETED'), (1, 'Soil Testing', 100, 'COMPLETED'), (1, 'Digging', 40, 'IN_PROGRESS'), (2, 'Mix Preparation', 100, 'COMPLETED')
+Hibernate: INSERT INTO equipments (project_id, name, total_quantity, in_use, in_maintenance) VALUES (1, 'Excavator', 4, 3, 1), (1, 'Concrete Mixer', 2, 1, 0), (2, 'Crane', 2, 2, 0)
+Hibernate: INSERT INTO labor_force (project_id, worker_type, count, daily_wage, days_worked, total_paid) VALUES (1, 'ENGINEER', 5, 2000.0, 15, 100000.0), (1, 'MASON', 20, 800.0, 15, 200000.0), (1, 'HELPER', 40, 500.0, 15, 250000.0), (2, 'OPERATOR', 10, 1200.0, 10, 120000.0)
+Hibernate: INSERT INTO materials (project_id, name, total_available, daily_consumption_rate, refill_date_target) VALUES (1, 'Cement (Bags)', 5000.0, 200.0, '2026-03-25'), (1, 'Steel (Tons)', 200.0, 5.0, '2026-04-10'), (2, 'Sand (Cubic Meters)', 1500.0, 50.0, '2026-03-30')
+Hibernate: INSERT INTO issues (project_id, title, description, category, severity, status, reported_by, created_at) VALUES (1, 'Crane Breakdown', 'Main crane engine failure.', 'EQUIPMENT_FAILURE', 'CRITICAL', 'OPEN', 'engineer', '2026-03-10'), (1, 'Late Cement Delivery', 'Supplier delayed cement bags by 2 days.', 'MATERIAL_SHORTAGE', 'MEDIUM', 'IN_PROGRESS', 'engineer', '2026-03-12'), (2, 'Minor Flood near pier', 'River water level rose.', 'SAFETY', 'HIGH', 'OPEN', 'engineer', '2026-02-20')
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.username=?
+Hibernate: select al1_0.id,al1_0.action,al1_0.project_id,al1_0.task_id,al1_0.timestamp,al1_0.user_id from activity_logs al1_0 order by al1_0.timestamp desc limit ?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.project_id,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.project_id,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0 where p1_0.id=?
+Hibernate: select t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.project_id,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0 where p1_0.id=?
+Hibernate: select t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.project_id,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.project_id,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.project_id,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.project_id,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.project_id,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.project_id,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.project_id,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.project_id,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.project_id,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.project_id,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.project_id,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.project_id,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.project_id,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0 where p1_0.id=?
+Hibernate: select t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.project_id,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0 where p1_0.id=?
+Hibernate: select t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.project_id,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.project_id,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.project_id,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.project_id,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.project_id,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select p1_0.id,p1_0.budget,p1_0.client,p1_0.completion_percentage,p1_0.end_date,p1_0.location,p1_0.name,p1_0.start_date,p1_0.status from projects p1_0
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select u1_0.id,u1_0.name,u1_0.password,u1_0.role,u1_0.username from users u1_0 where u1_0.id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
+Hibernate: select e1_0.project_id,e1_0.id,e1_0.in_maintenance,e1_0.in_use,e1_0.name,e1_0.total_quantity from equipments e1_0 where e1_0.project_id=?
+Hibernate: select t1_0.project_id,t1_0.id,t1_0.actual_cost,t1_0.deadline,t1_0.engineer_id,t1_0.estimated_cost,t1_0.name,t1_0.progress,t1_0.start_date,t1_0.status from tasks t1_0 where t1_0.project_id=?
+Hibernate: select i1_0.project_id,i1_0.id,i1_0.category,i1_0.created_at,i1_0.description,i1_0.reported_by,i1_0.severity,i1_0.status,i1_0.title from issues i1_0 where i1_0.project_id=?
+Hibernate: select lf1_0.project_id,lf1_0.id,lf1_0.count,lf1_0.daily_wage,lf1_0.days_worked,lf1_0.total_paid,lf1_0.worker_type from labor_force lf1_0 where lf1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.daily_consumption_rate,m1_0.name,m1_0.refill_date_target,m1_0.total_available from materials m1_0 where m1_0.project_id=?
+Hibernate: select m1_0.project_id,m1_0.id,m1_0.due_date,m1_0.name,m1_0.status from milestones m1_0 where m1_0.project_id=?
+Hibernate: select st1_0.task_id,st1_0.id,st1_0.name,st1_0.progress,st1_0.status from sub_tasks st1_0 where st1_0.task_id=?
