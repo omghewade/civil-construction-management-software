@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "equipments")
@@ -34,6 +35,21 @@ public class Equipment {
     @Min(0)
     @Column(name = "in_maintenance", nullable = false)
     private Integer inMaintenance = 0;
+
+    @Column(name = "co2_per_hour")
+    private Double co2PerHour = 0.0;
+
+    @Column(name = "hours_used")
+    private Double hoursUsed = 0.0;
+
+    @Column(name = "last_latitude")
+    private Double lastLatitude;
+
+    @Column(name = "last_longitude")
+    private Double lastLongitude;
+
+    @Column(name = "last_ping_time")
+    private LocalDateTime lastPingTime;
 
     // Transient calculated field
     @Transient
@@ -95,5 +111,45 @@ public class Equipment {
 
     public void setInMaintenance(Integer inMaintenance) {
         this.inMaintenance = inMaintenance;
+    }
+
+    public Double getCo2PerHour() {
+        return co2PerHour;
+    }
+
+    public void setCo2PerHour(Double co2PerHour) {
+        this.co2PerHour = co2PerHour;
+    }
+
+    public Double getHoursUsed() {
+        return hoursUsed;
+    }
+
+    public void setHoursUsed(Double hoursUsed) {
+        this.hoursUsed = hoursUsed;
+    }
+
+    public Double getLastLatitude() {
+        return lastLatitude;
+    }
+
+    public void setLastLatitude(Double lastLatitude) {
+        this.lastLatitude = lastLatitude;
+    }
+
+    public Double getLastLongitude() {
+        return lastLongitude;
+    }
+
+    public void setLastLongitude(Double lastLongitude) {
+        this.lastLongitude = lastLongitude;
+    }
+
+    public LocalDateTime getLastPingTime() {
+        return lastPingTime;
+    }
+
+    public void setLastPingTime(LocalDateTime lastPingTime) {
+        this.lastPingTime = lastPingTime;
     }
 }

@@ -35,6 +35,9 @@ public class Material {
     @Column(name = "refill_date_target")
     private LocalDate refillDateTarget;
 
+    @Column(name = "co2_per_unit")
+    private Double co2PerUnit = 0.0;
+
     // Transient Calculated field: Extimated days left until empty
     @Transient
     public Integer getEstimatedEndDays() {
@@ -94,5 +97,13 @@ public class Material {
 
     public void setRefillDateTarget(LocalDate refillDateTarget) {
         this.refillDateTarget = refillDateTarget;
+    }
+
+    public Double getCo2PerUnit() {
+        return co2PerUnit;
+    }
+
+    public void setCo2PerUnit(Double co2PerUnit) {
+        this.co2PerUnit = co2PerUnit;
     }
 }

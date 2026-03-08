@@ -1,7 +1,7 @@
-// ============================================================
+﻿// ============================================================
 // CivilTrack Enterprise Frontend v3.0  (AI Edition)
 // ============================================================
-const AI_API_KEY = 'AIzaSyBNtaEhILHvHGyXpfWKTtegqHXMpvS8FHw';
+const AI_API_KEY = 'AIzaSyCJOh44Ln5WeEVkZ0FJdZzw-UcXNwEd2QU';
 const AI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${AI_API_KEY}`;
 
 async function callAI(prompt, { json = false } = {}) {
@@ -118,7 +118,13 @@ function navigate(view) {
         issues: 'Issues & Risks', gallery: '3D Gallery', users: 'User Management',
         'material-grades': 'Material Grades & Inventory',
         'ai-decisions': 'AI Construction Decision Engine',
-        'bio-cement': 'Bio-Cement Manufacturing Lab'
+        'bio-cement': 'Bio-Cement Manufacturing Lab',
+        'cad-converter': 'CAD Design Converter & 3D Viewer',
+        'calculators': 'Construction Calculators',
+        'weather-alerts': 'Weather-Aware Task Scheduling',
+        'sustainability': 'Carbon Footprint & Sustainability',
+        'geofence': 'Geo-fence & Equipment Security',
+        'ai-chat': 'AI Construction Assistant'
     };
     document.getElementById('page-title').innerText = titles[view] || 'CivilTrack';
     currentView = view;
@@ -135,6 +141,12 @@ function navigate(view) {
     if (view === 'material-grades') loadMaterialGrades();
     if (view === 'ai-decisions') initAIDecisions();
     if (view === 'bio-cement') loadBioCement();
+    if (view === 'cad-converter') loadCADConverter();
+    if (view === 'calculators') initCalculators();
+    if (view === 'weather-alerts') initWeatherAlerts();
+    if (view === 'sustainability') initSustainability();
+    if (view === 'geofence') initGeofence();
+    if (view === 'ai-chat') { /* AI chat is always ready */ }
 }
 
 document.querySelectorAll('.nav-item[data-view]').forEach(item => {
@@ -1121,6 +1133,1462 @@ async function exportAnalyticsCSV() {
 initApp();
 
 // ============================================================
+// CAD CONVERTER MODULE
+// ============================================================
+let cadEntities = [];
+let cadCurrentTheme = 'blueprint';
+let cadThreeScene = null;
+let cadThreeRenderer = null;
+let cadThreeCamera = null;
+let cadOrbitControls = null;
+let cadAnimId = null;
+
+const CAD_THEMES = {
+    blueprint: { name: 'Blueprint', bg: '#0a1e3d', stroke: '#4fa8ff', grid: '#1a3a5c', accent: '#87ceeb', text: '#cce5ff' },
+    modern: { name: 'Modern Dark', bg: '#0d0d0d', stroke: '#00ff88', grid: '#1a1a2e', accent: '#ff6b9d', text: '#e0e0e0' },
+    classic: { name: 'Classic B/W', bg: '#ffffff', stroke: '#1a1a1a', grid: '#e8e8e8', accent: '#555555', text: '#333333' },
+    construction: { name: 'Construction', bg: '#1a120b', stroke: '#ff8c00', grid: '#2a1f10', accent: '#ffb347', text: '#f5d5a0' },
+    architectural: { name: 'Architectural', bg: '#f5f0e8', stroke: '#5c4033', grid: '#e8ddd0', accent: '#8b6914', text: '#4a3520' }
+};
+
+const DEMO_DXF = `0
+SECTION
+2
+ENTITIES
+0
+LINE
+8
+Walls
+10
+0
+20
+0
+11
+200
+21
+0
+0
+LINE
+8
+Walls
+10
+200
+20
+0
+11
+200
+21
+150
+0
+LINE
+8
+Walls
+10
+200
+20
+150
+11
+0
+21
+150
+0
+LINE
+8
+Walls
+10
+0
+20
+150
+11
+0
+21
+0
+0
+LINE
+8
+Walls
+10
+100
+20
+0
+11
+100
+21
+150
+0
+LINE
+8
+Walls
+10
+0
+20
+80
+11
+100
+21
+80
+0
+LINE
+8
+Doors
+10
+40
+20
+0
+11
+60
+21
+0
+0
+LINE
+8
+Doors
+10
+130
+20
+0
+11
+160
+21
+0
+0
+LINE
+8
+Doors
+10
+100
+20
+40
+11
+100
+21
+60
+0
+LINE
+8
+Windows
+10
+0
+20
+30
+11
+0
+21
+55
+0
+LINE
+8
+Windows
+10
+200
+20
+30
+11
+200
+21
+55
+0
+LINE
+8
+Windows
+10
+200
+20
+100
+11
+200
+21
+125
+0
+LINE
+8
+Stairs
+10
+120
+20
+100
+11
+140
+21
+100
+0
+LINE
+8
+Stairs
+10
+140
+20
+100
+11
+140
+21
+130
+0
+LINE
+8
+Stairs
+10
+140
+20
+130
+11
+120
+21
+130
+0
+LINE
+8
+Stairs
+10
+120
+20
+130
+11
+120
+21
+100
+0
+LINE
+8
+Stairs
+10
+120
+20
+110
+11
+140
+21
+110
+0
+LINE
+8
+Stairs
+10
+120
+20
+120
+11
+140
+21
+120
+0
+CIRCLE
+8
+Columns
+10
+20
+20
+20
+40
+5
+0
+CIRCLE
+8
+Columns
+10
+80
+20
+20
+40
+5
+0
+CIRCLE
+8
+Columns
+10
+20
+20
+130
+40
+5
+0
+CIRCLE
+8
+Columns
+10
+80
+20
+130
+40
+5
+0
+CIRCLE
+8
+Columns
+10
+120
+20
+20
+40
+5
+0
+CIRCLE
+8
+Columns
+10
+180
+20
+20
+40
+5
+0
+CIRCLE
+8
+Columns
+10
+120
+20
+130
+40
+5
+0
+CIRCLE
+8
+Columns
+10
+180
+20
+130
+40
+5
+0
+LINE
+8
+Furniture
+10
+10
+20
+85
+11
+40
+21
+85
+0
+LINE
+8
+Furniture
+10
+40
+20
+85
+11
+40
+21
+140
+0
+LINE
+8
+Furniture
+10
+40
+20
+140
+11
+10
+21
+140
+0
+LINE
+8
+Furniture
+10
+10
+20
+140
+11
+10
+21
+85
+0
+LINE
+8
+Furniture
+10
+55
+20
+90
+11
+90
+21
+90
+0
+LINE
+8
+Furniture
+10
+90
+20
+90
+11
+90
+21
+110
+0
+LINE
+8
+Furniture
+10
+90
+20
+110
+11
+55
+21
+110
+0
+LINE
+8
+Furniture
+10
+55
+20
+110
+11
+55
+21
+90
+0
+ARC
+8
+Doors
+10
+40
+20
+0
+40
+20
+50
+90
+51
+180
+0
+ARC
+8
+Doors
+10
+160
+20
+0
+40
+30
+50
+0
+51
+180
+0
+LINE
+8
+Furniture
+10
+150
+20
+90
+11
+190
+21
+90
+0
+LINE
+8
+Furniture
+10
+190
+20
+90
+11
+190
+21
+140
+0
+LINE
+8
+Furniture
+10
+190
+20
+140
+11
+150
+21
+140
+0
+LINE
+8
+Furniture
+10
+150
+20
+140
+11
+150
+21
+90
+0
+LINE
+8
+Furniture
+10
+110
+20
+10
+11
+130
+21
+10
+0
+LINE
+8
+Furniture
+10
+130
+20
+10
+11
+130
+21
+30
+0
+LINE
+8
+Furniture
+10
+130
+20
+30
+11
+110
+21
+30
+0
+LINE
+8
+Furniture
+10
+110
+20
+30
+11
+110
+21
+10
+0
+LINE
+8
+Furniture
+10
+160
+20
+10
+11
+190
+21
+10
+0
+LINE
+8
+Furniture
+10
+190
+20
+10
+11
+190
+21
+40
+0
+LINE
+8
+Furniture
+10
+190
+20
+40
+11
+160
+21
+40
+0
+LINE
+8
+Furniture
+10
+160
+20
+40
+11
+160
+21
+10
+0
+0
+ENDSEC
+0
+EOF`;
+
+function parseDXF(text) {
+    const entities = [];
+    const lines = text.split(/\r?\n/);
+    let i = 0;
+    let inEntities = false;
+
+    while (i < lines.length) {
+        const code = lines[i]?.trim();
+        const val = lines[i + 1]?.trim();
+        if (code === '2' && val === 'ENTITIES') { inEntities = true; i += 2; continue; }
+        if (code === '0' && val === 'ENDSEC') { inEntities = false; i += 2; continue; }
+
+        if (inEntities && code === '0') {
+            const etype = val;
+            i += 2;
+            const props = {};
+            while (i < lines.length) {
+                const gc = lines[i]?.trim();
+                const gv = lines[i + 1]?.trim();
+                if (gc === '0') break;
+                props[gc] = gv;
+                i += 2;
+            }
+
+            if (etype === 'LINE') {
+                entities.push({ type: 'LINE', layer: props['8'] || '0', x1: +props['10'] || 0, y1: +props['20'] || 0, x2: +props['11'] || 0, y2: +props['21'] || 0 });
+            } else if (etype === 'CIRCLE') {
+                entities.push({ type: 'CIRCLE', layer: props['8'] || '0', cx: +props['10'] || 0, cy: +props['20'] || 0, r: +props['40'] || 0 });
+            } else if (etype === 'ARC') {
+                entities.push({ type: 'ARC', layer: props['8'] || '0', cx: +props['10'] || 0, cy: +props['20'] || 0, r: +props['40'] || 0, startAngle: +props['50'] || 0, endAngle: +props['51'] || 360 });
+            } else if (etype === 'LWPOLYLINE' || etype === 'POLYLINE') {
+                entities.push({ type: 'POLYLINE', layer: props['8'] || '0', props });
+            }
+        } else {
+            i += 2;
+        }
+    }
+    return entities;
+}
+
+function getCadBounds(entities) {
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (const e of entities) {
+        if (e.type === 'LINE') {
+            minX = Math.min(minX, e.x1, e.x2); maxX = Math.max(maxX, e.x1, e.x2);
+            minY = Math.min(minY, e.y1, e.y2); maxY = Math.max(maxY, e.y1, e.y2);
+        } else if (e.type === 'CIRCLE') {
+            minX = Math.min(minX, e.cx - e.r); maxX = Math.max(maxX, e.cx + e.r);
+            minY = Math.min(minY, e.cy - e.r); maxY = Math.max(maxY, e.cy + e.r);
+        } else if (e.type === 'ARC') {
+            minX = Math.min(minX, e.cx - e.r); maxX = Math.max(maxX, e.cx + e.r);
+            minY = Math.min(minY, e.cy - e.r); maxY = Math.max(maxY, e.cy + e.r);
+        }
+    }
+    if (!isFinite(minX)) { minX = 0; minY = 0; maxX = 100; maxY = 100; }
+    return { minX, minY, maxX, maxY, width: maxX - minX, height: maxY - minY };
+}
+
+function getLayerColor(layer, theme) {
+    const layerColors = {
+        'Walls': theme.stroke,
+        'Doors': theme.accent,
+        'Windows': '#60a5fa',
+        'Columns': '#f59e0b',
+        'Stairs': '#a78bfa',
+        'Furniture': '#6b7280'
+    };
+    return layerColors[layer] || theme.stroke;
+}
+
+function renderDXF2D(entities, themeKey) {
+    const theme = CAD_THEMES[themeKey] || CAD_THEMES.blueprint;
+    const canvas = document.getElementById('cad-2d-canvas');
+    if (!canvas) return;
+    const bounds = getCadBounds(entities);
+    const pad = 30;
+    const vw = bounds.width + pad * 2;
+    const vh = bounds.height + pad * 2;
+
+    let svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${bounds.minX - pad} ${bounds.minY - pad} ${vw} ${vh}" style="background:${theme.bg};">`;
+
+    // Grid
+    const gridStep = Math.max(10, Math.round(bounds.width / 20));
+    for (let x = Math.floor(bounds.minX / gridStep) * gridStep; x <= bounds.maxX + pad; x += gridStep) {
+        svgContent += `<line x1="${x}" y1="${bounds.minY - pad}" x2="${x}" y2="${bounds.maxY + pad}" stroke="${theme.grid}" stroke-width="0.3" />`;
+    }
+    for (let y = Math.floor(bounds.minY / gridStep) * gridStep; y <= bounds.maxY + pad; y += gridStep) {
+        svgContent += `<line x1="${bounds.minX - pad}" y1="${y}" x2="${bounds.maxX + pad}" y2="${y}" stroke="${theme.grid}" stroke-width="0.3" />`;
+    }
+
+    for (const e of entities) {
+        const col = getLayerColor(e.layer, theme);
+        const sw = e.layer === 'Walls' ? 2.5 : (e.layer === 'Furniture' ? 0.8 : 1.5);
+        const dash = e.layer === 'Doors' ? 'stroke-dasharray="3 2"' : (e.layer === 'Windows' ? 'stroke-dasharray="1 1"' : '');
+
+        if (e.type === 'LINE') {
+            svgContent += `<line x1="${e.x1}" y1="${e.y1}" x2="${e.x2}" y2="${e.y2}" stroke="${col}" stroke-width="${sw}" stroke-linecap="round" ${dash} />`;
+        } else if (e.type === 'CIRCLE') {
+            const fill = e.layer === 'Columns' ? col : 'none';
+            const opacity = e.layer === 'Columns' ? '0.3' : '1';
+            svgContent += `<circle cx="${e.cx}" cy="${e.cy}" r="${e.r}" stroke="${col}" stroke-width="${sw}" fill="${fill}" fill-opacity="${opacity}" ${dash} />`;
+        } else if (e.type === 'ARC') {
+            const startRad = e.startAngle * Math.PI / 180;
+            const endRad = e.endAngle * Math.PI / 180;
+            const x1 = e.cx + e.r * Math.cos(startRad);
+            const y1 = e.cy - e.r * Math.sin(startRad);
+            const x2 = e.cx + e.r * Math.cos(endRad);
+            const y2 = e.cy - e.r * Math.sin(endRad);
+            const largeArc = (e.endAngle - e.startAngle > 180) ? 1 : 0;
+            svgContent += `<path d="M ${x1} ${y1} A ${e.r} ${e.r} 0 ${largeArc} 0 ${x2} ${y2}" stroke="${col}" stroke-width="${sw}" fill="none" ${dash} />`;
+        }
+    }
+
+    // Labels
+    const fontSize = Math.max(4, bounds.width / 50);
+    svgContent += `<text x="${bounds.minX}" y="${bounds.minY - pad / 2}" fill="${theme.text}" font-size="${fontSize * 1.5}" font-family="Inter,sans-serif" font-weight="700">Floor Plan — ${theme.name} Layout</text>`;
+
+    const layers = [...new Set(entities.map(e => e.layer))];
+    let lx = bounds.minX;
+    for (const layer of layers) {
+        const lc = getLayerColor(layer, theme);
+        svgContent += `<rect x="${lx}" y="${bounds.maxY + pad / 3}" width="${fontSize}" height="${fontSize * 0.6}" fill="${lc}" rx="1" />`;
+        svgContent += `<text x="${lx + fontSize * 1.3}" y="${bounds.maxY + pad / 3 + fontSize * 0.5}" fill="${theme.text}" font-size="${fontSize * 0.7}" font-family="Inter,sans-serif">${layer}</text>`;
+        lx += fontSize * 6;
+    }
+
+    svgContent += '</svg>';
+    canvas.innerHTML = svgContent;
+}
+
+function renderThemeCards(entities) {
+    const grid = document.getElementById('cad-themes-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    for (const [key, theme] of Object.entries(CAD_THEMES)) {
+        const card = document.createElement('div');
+        card.className = `cad-theme-card${key === cadCurrentTheme ? ' active' : ''}`;
+
+        const bounds = getCadBounds(entities);
+        const pad = 10;
+        const vw = bounds.width + pad * 2;
+        const vh = bounds.height + pad * 2;
+
+        let miniSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${bounds.minX - pad} ${bounds.minY - pad} ${vw} ${vh}" style="background:${theme.bg};">`;
+        for (const e of entities) {
+            const col = getLayerColor(e.layer, theme);
+            if (e.type === 'LINE') {
+                miniSvg += `<line x1="${e.x1}" y1="${e.y1}" x2="${e.x2}" y2="${e.y2}" stroke="${col}" stroke-width="1.5" stroke-linecap="round" />`;
+            } else if (e.type === 'CIRCLE') {
+                miniSvg += `<circle cx="${e.cx}" cy="${e.cy}" r="${e.r}" stroke="${col}" stroke-width="1" fill="none" />`;
+            } else if (e.type === 'ARC') {
+                const sR = e.startAngle * Math.PI / 180, eR = e.endAngle * Math.PI / 180;
+                const x1 = e.cx + e.r * Math.cos(sR), y1 = e.cy - e.r * Math.sin(sR);
+                const x2 = e.cx + e.r * Math.cos(eR), y2 = e.cy - e.r * Math.sin(eR);
+                miniSvg += `<path d="M ${x1} ${y1} A ${e.r} ${e.r} 0 0 0 ${x2} ${y2}" stroke="${col}" stroke-width="1" fill="none" />`;
+            }
+        }
+        miniSvg += '</svg>';
+
+        card.innerHTML = `<div class="cad-theme-preview">${miniSvg}</div><div class="cad-theme-label">${theme.name}</div>`;
+        card.onclick = () => {
+            cadCurrentTheme = key;
+            document.getElementById('cad-theme-select').value = key;
+            renderDXF2D(cadEntities, key);
+            document.querySelectorAll('.cad-theme-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+        };
+        grid.appendChild(card);
+    }
+}
+
+function renderDXF3D(entities) {
+    const container = document.getElementById('cad-3d-canvas');
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (cadAnimId) cancelAnimationFrame(cadAnimId);
+
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+
+    cadThreeScene = new THREE.Scene();
+    cadThreeScene.background = new THREE.Color(0x050d18);
+    cadThreeScene.fog = new THREE.Fog(0x050d18, 200, 600);
+
+    cadThreeCamera = new THREE.PerspectiveCamera(50, w / h, 0.1, 2000);
+
+    cadThreeRenderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    cadThreeRenderer.setSize(w, h);
+    cadThreeRenderer.setPixelRatio(window.devicePixelRatio);
+    cadThreeRenderer.shadowMap.enabled = true;
+    container.appendChild(cadThreeRenderer.domElement);
+
+    cadOrbitControls = new THREE.OrbitControls(cadThreeCamera, cadThreeRenderer.domElement);
+    cadOrbitControls.enableDamping = true;
+    cadOrbitControls.dampingFactor = 0.08;
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0x4488cc, 0.6);
+    cadThreeScene.add(ambientLight);
+    const directLight = new THREE.DirectionalLight(0xffffff, 0.9);
+    directLight.position.set(100, 200, 100);
+    directLight.castShadow = true;
+    cadThreeScene.add(directLight);
+    const pointLight = new THREE.PointLight(0x3b82f6, 0.7, 400);
+    pointLight.position.set(0, 100, 0);
+    cadThreeScene.add(pointLight);
+
+    const bounds = getCadBounds(entities);
+    const cx = (bounds.minX + bounds.maxX) / 2;
+    const cy = (bounds.minY + bounds.maxY) / 2;
+    const extH = parseInt(document.getElementById('cad-extrude-height')?.value || '10');
+
+    // Ground plane
+    const groundGeo = new THREE.PlaneGeometry(bounds.width * 2, bounds.height * 2);
+    const groundMat = new THREE.MeshStandardMaterial({ color: 0x1a2332, roughness: 0.9, metalness: 0.1 });
+    const ground = new THREE.Mesh(groundGeo, groundMat);
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.set(cx, -0.1, cy);
+    ground.receiveShadow = true;
+    cadThreeScene.add(ground);
+
+    // Grid helper
+    const gridHelper = new THREE.GridHelper(Math.max(bounds.width, bounds.height) * 1.5, 20, 0x1a3a5c, 0x0a1628);
+    gridHelper.position.set(cx, 0, cy);
+    cadThreeScene.add(gridHelper);
+
+    const layerMaterials = {
+        'Walls': new THREE.MeshStandardMaterial({ color: 0x4fa8ff, roughness: 0.4, metalness: 0.3, transparent: true, opacity: 0.85 }),
+        'Doors': new THREE.MeshStandardMaterial({ color: 0x8b6914, roughness: 0.6, metalness: 0.2, transparent: true, opacity: 0.7 }),
+        'Windows': new THREE.MeshStandardMaterial({ color: 0x60a5fa, roughness: 0.1, metalness: 0.8, transparent: true, opacity: 0.4 }),
+        'Columns': new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.3, metalness: 0.5 }),
+        'Stairs': new THREE.MeshStandardMaterial({ color: 0xa78bfa, roughness: 0.5, metalness: 0.3 }),
+        'Furniture': new THREE.MeshStandardMaterial({ color: 0x6b7280, roughness: 0.7, metalness: 0.1, transparent: true, opacity: 0.6 }),
+        'default': new THREE.MeshStandardMaterial({ color: 0x3b82f6, roughness: 0.5, metalness: 0.3 })
+    };
+
+    for (const e of entities) {
+        const mat = layerMaterials[e.layer] || layerMaterials['default'];
+        const height = e.layer === 'Walls' ? extH : (e.layer === 'Columns' ? extH * 1.1 : (e.layer === 'Furniture' ? extH * 0.3 : (e.layer === 'Windows' ? extH * 0.4 : (e.layer === 'Stairs' ? extH * 0.6 : extH * 0.5))));
+        const yOff = e.layer === 'Windows' ? extH * 0.35 : 0;
+
+        if (e.type === 'LINE') {
+            const dx = e.x2 - e.x1, dy = e.y2 - e.y1;
+            const len = Math.sqrt(dx * dx + dy * dy);
+            if (len < 0.1) continue;
+            const thickness = e.layer === 'Walls' ? 2 : (e.layer === 'Furniture' ? 0.5 : 1);
+            const geo = new THREE.BoxGeometry(len, height, thickness);
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set((e.x1 + e.x2) / 2, height / 2 + yOff, (e.y1 + e.y2) / 2);
+            mesh.rotation.y = -Math.atan2(dy, dx);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            cadThreeScene.add(mesh);
+        } else if (e.type === 'CIRCLE') {
+            const cHeight = e.layer === 'Columns' ? height : height * 0.5;
+            const geo = new THREE.CylinderGeometry(e.r, e.r, cHeight, 24);
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set(e.cx, cHeight / 2, e.cy);
+            mesh.castShadow = true;
+            cadThreeScene.add(mesh);
+        }
+    }
+
+    // Roof
+    const roofGeo = new THREE.BoxGeometry(bounds.width + 4, 1, bounds.height + 4);
+    const roofMat = new THREE.MeshStandardMaterial({ color: 0x2a4060, roughness: 0.6, metalness: 0.3, transparent: true, opacity: 0.3 });
+    const roof = new THREE.Mesh(roofGeo, roofMat);
+    roof.position.set(cx, extH + 0.5, cy);
+    cadThreeScene.add(roof);
+
+    // Camera position
+    const maxDim = Math.max(bounds.width, bounds.height);
+    cadThreeCamera.position.set(cx + maxDim, maxDim * 0.8, cy + maxDim);
+    cadOrbitControls.target.set(cx, extH / 2, cy);
+    cadOrbitControls.update();
+
+    function animate() {
+        cadAnimId = requestAnimationFrame(animate);
+        cadOrbitControls.update();
+        cadThreeRenderer.render(cadThreeScene, cadThreeCamera);
+    }
+    animate();
+
+    // Handle resize
+    const resizeObs = new ResizeObserver(() => {
+        const nw = container.clientWidth, nh = container.clientHeight;
+        if (nw > 0 && nh > 0) {
+            cadThreeCamera.aspect = nw / nh;
+            cadThreeCamera.updateProjectionMatrix();
+            cadThreeRenderer.setSize(nw, nh);
+        }
+    });
+    resizeObs.observe(container);
+}
+
+function renderEntityTable(entities) {
+    const tbody = document.getElementById('cad-entities-tbody');
+    const statsDiv = document.getElementById('cad-entity-stats');
+    if (!tbody || !statsDiv) return;
+
+    const counts = {};
+    entities.forEach(e => { counts[e.type] = (counts[e.type] || 0) + 1; });
+    const layerCounts = {};
+    entities.forEach(e => { layerCounts[e.layer] = (layerCounts[e.layer] || 0) + 1; });
+
+    statsDiv.innerHTML = Object.entries(counts).map(([t, c]) =>
+        `<div class="cad-entity-stat"><span class="count">${c}</span> ${t}</div>`
+    ).join('') + Object.entries(layerCounts).map(([l, c]) =>
+        `<div class="cad-entity-stat"><span class="count">${c}</span> ${l}</div>`
+    ).join('');
+
+    tbody.innerHTML = entities.slice(0, 100).map((e, i) => {
+        let details = '';
+        if (e.type === 'LINE') details = `(${e.x1.toFixed(1)}, ${e.y1.toFixed(1)}) → (${e.x2.toFixed(1)}, ${e.y2.toFixed(1)})`;
+        else if (e.type === 'CIRCLE') details = `Center: (${e.cx.toFixed(1)}, ${e.cy.toFixed(1)}), R=${e.r.toFixed(1)}`;
+        else if (e.type === 'ARC') details = `Center: (${e.cx.toFixed(1)}, ${e.cy.toFixed(1)}), R=${e.r.toFixed(1)}, ${e.startAngle}°–${e.endAngle}°`;
+        return `<tr><td>${i + 1}</td><td><span class="badge">${e.type}</span></td><td>${e.layer}</td><td style="font-size:0.78rem;color:var(--text-muted);">${details}</td></tr>`;
+    }).join('');
+}
+
+function processCADFile(text, fileName) {
+    cadEntities = parseDXF(text);
+    if (cadEntities.length === 0) {
+        toast('No Entities', 'Could not parse any entities from this DXF file. Please check the file format.', 'warning');
+        return;
+    }
+    document.getElementById('cad-file-info').classList.remove('hidden');
+    document.getElementById('cad-file-name').textContent = fileName;
+    document.getElementById('cad-entity-count').textContent = `${cadEntities.length} entities`;
+    document.getElementById('cad-workspace').classList.remove('hidden');
+    document.getElementById('cad-upload-zone').style.display = 'none';
+
+    cadCurrentTheme = 'blueprint';
+    document.getElementById('cad-theme-select').value = 'blueprint';
+
+    renderThemeCards(cadEntities);
+    renderDXF2D(cadEntities, cadCurrentTheme);
+    renderDXF3D(cadEntities);
+    renderEntityTable(cadEntities);
+
+    toast('CAD Loaded', `${cadEntities.length} entities parsed from "${fileName}". 3D model generated.`, 'success');
+}
+
+function loadCADConverter() {
+    const zone = document.getElementById('cad-upload-zone');
+    const fileInput = document.getElementById('cad-file-input');
+    const browseBtn = document.getElementById('cad-browse-btn');
+    const demoBtn = document.getElementById('cad-demo-btn');
+    const clearBtn = document.getElementById('cad-clear-btn');
+    const themeSelect = document.getElementById('cad-theme-select');
+    const heightSlider = document.getElementById('cad-extrude-height');
+
+    if (!zone) return;
+
+    // Drag and drop
+    zone.addEventListener('dragover', (ev) => { ev.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => { zone.classList.remove('drag-over'); });
+    zone.addEventListener('drop', (ev) => {
+        ev.preventDefault();
+        zone.classList.remove('drag-over');
+        const file = ev.dataTransfer.files[0];
+        if (file && file.name.toLowerCase().endsWith('.dxf')) {
+            const reader = new FileReader();
+            reader.onload = (e) => processCADFile(e.target.result, file.name);
+            reader.readAsText(file);
+        } else {
+            toast('Invalid File', 'Please upload a .dxf file.', 'warning');
+        }
+    });
+
+    // Browse button
+    browseBtn.onclick = () => fileInput.click();
+    fileInput.onchange = () => {
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => processCADFile(e.target.result, file.name);
+            reader.readAsText(file);
+        }
+    };
+
+    // Demo button
+    demoBtn.onclick = () => processCADFile(DEMO_DXF, 'demo_building_plan.dxf');
+
+    // Clear button
+    clearBtn.onclick = () => {
+        cadEntities = [];
+        if (cadAnimId) cancelAnimationFrame(cadAnimId);
+        document.getElementById('cad-workspace').classList.add('hidden');
+        document.getElementById('cad-file-info').classList.add('hidden');
+        zone.style.display = '';
+        fileInput.value = '';
+    };
+
+    // Theme select change
+    themeSelect.onchange = () => {
+        cadCurrentTheme = themeSelect.value;
+        renderDXF2D(cadEntities, cadCurrentTheme);
+        document.querySelectorAll('.cad-theme-card').forEach(c => c.classList.remove('active'));
+        const active = document.querySelector(`.cad-theme-card:nth-child(${Object.keys(CAD_THEMES).indexOf(cadCurrentTheme) + 1})`);
+        if (active) active.classList.add('active');
+    };
+
+    // Height slider change
+    heightSlider.oninput = () => {
+        if (cadEntities.length > 0) renderDXF3D(cadEntities);
+    };
+}
+
+function exportCADSVG() {
+    const canvas = document.getElementById('cad-2d-canvas');
+    if (!canvas) return;
+    const svg = canvas.innerHTML;
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'cad_design.svg'; a.click();
+    URL.revokeObjectURL(url);
+    toast('Exported', '2D design downloaded as SVG.', 'success');
+}
+
+function export3DScreenshot() {
+    if (!cadThreeRenderer) { toast('No 3D View', 'Generate 3D model first.', 'warning'); return; }
+    cadThreeRenderer.render(cadThreeScene, cadThreeCamera);
+    const canvas = cadThreeRenderer.domElement;
+    const url = canvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = url; a.download = 'cad_3d_model.png'; a.click();
+    toast('Exported', '3D model screenshot downloaded as PNG.', 'success');
+}
+
+function exportCADEntitiesCSV() {
+    if (cadEntities.length === 0) { toast('No Data', 'Load a DXF file first.', 'warning'); return; }
+    const rows = [['#', 'Type', 'Layer', 'Details']];
+    cadEntities.forEach((e, i) => {
+        let d = '';
+        if (e.type === 'LINE') d = `(${e.x1},${e.y1})→(${e.x2},${e.y2})`;
+        else if (e.type === 'CIRCLE') d = `Center(${e.cx},${e.cy}) R=${e.r}`;
+        else if (e.type === 'ARC') d = `Center(${e.cx},${e.cy}) R=${e.r} ${e.startAngle}°-${e.endAngle}°`;
+        rows.push([i + 1, e.type, e.layer, d]);
+    });
+    downloadCSV(rows, 'cad_entities.csv');
+}
+
+// ============================================================
+// CONSTRUCTION CALCULATORS
+// ============================================================
+function initCalculators() {
+    const bmType = document.getElementById('bm-beam-type');
+    if (bmType) bmType.onchange = () => {
+        const v = bmType.value;
+        document.getElementById('bm-load-label').textContent = v.includes('udl') ? 'UDL, w (kN/m)' : 'Point Load, P (kN)';
+    };
+}
+
+function switchCalcTab(btn, id) {
+    document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.calc-content').forEach(c => c.classList.add('hidden'));
+    btn.classList.add('active');
+    const el = document.getElementById('calc-' + id);
+    if (el) el.classList.remove('hidden');
+}
+
+function ri(id) { return parseFloat(document.getElementById(id)?.value) || 0; }
+function rv(label, val, unit, cls) {
+    cls = cls || '';
+    return '<div class="calc-result-item"><div class="label">' + label + '</div><div class="value ' + cls + '">' + val + '<span class="unit">' + unit + '</span></div></div>';
+}
+
+// 1. Bending Moment
+function calcBendingMoment() {
+    var type = document.getElementById('bm-beam-type').value;
+    var L = ri('bm-span'), P = ri('bm-load');
+    var M = 0, V = 0, Ra = 0, Rb = 0, formula = '', desc = '';
+
+    if (type === 'ss-point') {
+        M = P * L / 4; V = P / 2; Ra = Rb = P / 2;
+        formula = 'M = P x L / 4'; desc = 'Simply Supported - Central Point Load';
+    } else if (type === 'ss-udl') {
+        M = P * L * L / 8; V = P * L / 2; Ra = Rb = P * L / 2;
+        formula = 'M = w x L^2 / 8'; desc = 'Simply Supported - UDL';
+    } else if (type === 'cant-point') {
+        M = P * L; V = P; Ra = P; Rb = 0;
+        formula = 'M = P x L (at fixed end)'; desc = 'Cantilever - Point Load at Free End';
+    } else if (type === 'cant-udl') {
+        M = P * L * L / 2; V = P * L; Ra = P * L; Rb = 0;
+        formula = 'M = w x L^2 / 2 (at fixed end)'; desc = 'Cantilever - UDL';
+    }
+
+    var deflFormulas = {
+        'ss-point': 'delta = P.L^3 / 48EI', 'ss-udl': 'delta = 5.w.L^4 / 384EI',
+        'cant-point': 'delta = P.L^3 / 3EI', 'cant-udl': 'delta = w.L^4 / 8EI'
+    };
+
+    document.getElementById('bm-results').innerHTML =
+        '<div class="calc-result-card glass-card">' +
+        '<h3><i class="bx bx-shape-triangle" style="color:var(--accent-primary)"></i> ' + desc + '</h3>' +
+        '<div class="calc-formula">Formula: ' + formula + '</div>' +
+        '<div class="calc-result-grid">' +
+        rv('Max Bending Moment', M.toFixed(2), 'kN.m', '') +
+        rv('Max Shear Force', V.toFixed(2), 'kN', 'green') +
+        rv('Reaction at A (Ra)', Ra.toFixed(2), 'kN', 'orange') +
+        rv('Reaction at B (Rb)', Rb.toFixed(2), 'kN', 'orange') +
+        '</div>' +
+        '<div class="calc-note"><i class="bx bx-info-circle"></i> Deflection: ' + deflFormulas[type] + '</div>' +
+        '</div>';
+}
+
+// 2. Stress & Strain
+function calcStressStrain() {
+    var P = ri('ss-load'), A = ri('ss-area'), L0 = ri('ss-length'), dL = ri('ss-delta'), E = ri('ss-modulus');
+    var stress = (P * 1000) / A;
+    var strain = dL / L0;
+    var ECalc = stress / strain;
+    var deformation = (P * 1000 * L0) / (A * E * 1000);
+    var lateralStrain = 0.3 * strain;
+    var volStrain = strain * (1 - 2 * 0.3);
+
+    document.getElementById('ss-results').innerHTML =
+        '<div class="calc-result-card glass-card">' +
+        '<h3><i class="bx bx-expand" style="color:var(--accent-primary)"></i> Stress & Strain Results</h3>' +
+        '<div class="calc-formula">Stress = P/A | Strain = dL/L0 | E = Stress/Strain</div>' +
+        '<div class="calc-result-grid">' +
+        rv('Stress', stress.toFixed(2), 'MPa', '') +
+        rv('Strain', strain.toExponential(4), '', 'green') +
+        rv('Calculated E', (ECalc / 1000).toFixed(2), 'GPa', 'orange') +
+        rv('Deformation', deformation.toFixed(4), 'mm', 'purple') +
+        rv('Lateral Strain', lateralStrain.toExponential(4), '', 'green') +
+        rv('Volumetric Strain', volStrain.toExponential(4), '', '') +
+        '</div>' +
+        '<div class="calc-note"><i class="bx bx-info-circle"></i> Assuming Poisson ratio = 0.3 for steel. For concrete, use 0.15-0.20.</div>' +
+        '</div>';
+}
+
+// 3. Section Modulus
+function toggleSMInputs() {
+    var shape = document.getElementById('sm-shape').value;
+    document.getElementById('sm-rect-inputs').classList.toggle('hidden', shape !== 'rectangular');
+    document.getElementById('sm-circ-inputs').classList.toggle('hidden', shape !== 'circular');
+    document.getElementById('sm-hollow-rect-inputs').classList.toggle('hidden', shape !== 'hollow-rect');
+    document.getElementById('sm-hollow-circ-inputs').classList.toggle('hidden', shape !== 'hollow-circ');
+    document.getElementById('sm-i-inputs').classList.toggle('hidden', shape !== 'i-section');
+}
+
+function calcSectionModulus() {
+    var shape = document.getElementById('sm-shape').value;
+    var I = 0, A = 0, y = 0, label = '';
+
+    if (shape === 'rectangular') {
+        var b = ri('sm-b'), d = ri('sm-d');
+        I = (b * Math.pow(d, 3)) / 12; A = b * d; y = d / 2;
+        label = 'Rectangular ' + b + ' x ' + d + ' mm';
+    } else if (shape === 'circular') {
+        var D = ri('sm-dia');
+        I = (Math.PI * Math.pow(D, 4)) / 64; A = (Math.PI * D * D) / 4; y = D / 2;
+        label = 'Circular D=' + D + ' mm';
+    } else if (shape === 'hollow-rect') {
+        var B = ri('sm-B'), D2 = ri('sm-D'), b2 = ri('sm-bi'), d2 = ri('sm-di');
+        I = (B * Math.pow(D2, 3) - b2 * Math.pow(d2, 3)) / 12; A = B * D2 - b2 * d2; y = D2 / 2;
+        label = 'Hollow Rectangular ' + B + 'x' + D2 + ' (' + b2 + 'x' + d2 + ')';
+    } else if (shape === 'hollow-circ') {
+        var Do = ri('sm-Do'), di = ri('sm-di2');
+        I = (Math.PI * (Math.pow(Do, 4) - Math.pow(di, 4))) / 64; A = (Math.PI * (Do * Do - di * di)) / 4; y = Do / 2;
+        label = 'Hollow Circular D=' + Do + ', d=' + di + ' mm';
+    } else if (shape === 'i-section') {
+        var bf = ri('sm-bf'), dI = ri('sm-id'), tf = ri('sm-tf'), tw = ri('sm-tw');
+        var hw = dI - 2 * tf;
+        I = (bf * Math.pow(dI, 3) - (bf - tw) * Math.pow(hw, 3)) / 12;
+        A = 2 * bf * tf + hw * tw; y = dI / 2;
+        label = 'I-Section bf=' + bf + ', d=' + dI + ', tf=' + tf + ', tw=' + tw;
+    }
+
+    var Z = I / y;
+    var r = Math.sqrt(I / A);
+
+    document.getElementById('sm-results').innerHTML =
+        '<div class="calc-result-card glass-card">' +
+        '<h3><i class="bx bx-square" style="color:var(--accent-primary)"></i> ' + label + '</h3>' +
+        '<div class="calc-formula">I = bd^3/12 | Z = I/y | r = sqrt(I/A)</div>' +
+        '<div class="calc-result-grid">' +
+        rv('Moment of Inertia (I)', I.toExponential(3), 'mm^4', '') +
+        rv('Section Modulus (Z)', Z.toExponential(3), 'mm^3', 'green') +
+        rv('Area (A)', A.toFixed(1), 'mm^2', 'orange') +
+        rv('Neutral Axis (y)', y.toFixed(1), 'mm', '') +
+        rv('Radius of Gyration (r)', r.toFixed(2), 'mm', 'purple') +
+        rv('Plastic Modulus (Zp)', (1.5 * Z).toExponential(3), 'mm^3', 'green') +
+        '</div>' +
+        '<div class="calc-note"><i class="bx bx-info-circle"></i> Zp (plastic) estimated as 1.5xZ for rectangular. Actual shape factor varies by geometry.</div>' +
+        '</div>';
+}
+
+// 4. One-Way Slab Design (IS 456)
+function calcOneWaySlab() {
+    var L = ri('s1-span'), ll = ri('s1-ll'), ff = ri('s1-ff');
+    var fck = ri('s1-fck'), fy = ri('s1-fy'), barDia = ri('s1-bar');
+    var endCond = document.getElementById('s1-end').value;
+
+    var spanRatio = endCond === 'ss' ? 20 : 26;
+    var dMin = (L * 1000) / spanRatio;
+    var D = Math.ceil((dMin + 25 + barDia / 2) / 10) * 10;
+    var d = D - 25 - barDia / 2;
+
+    var selfWt = D / 1000 * 25;
+    var totalDL = selfWt + ff;
+    var wu = 1.5 * (totalDL + ll);
+
+    var Mu = endCond === 'ss' ? wu * L * L / 8 : wu * L * L / 12;
+
+    var Mulim = 0.138 * fck * 1000 * d * d / 1e6;
+    var safe = Mu <= Mulim;
+
+    var Ast = (0.5 * fck / fy) * (1 - Math.sqrt(1 - (4.6 * Mu * 1e6) / (fck * 1000 * d * d))) * 1000 * d;
+    var AstMin = 0.12 / 100 * 1000 * D;
+    var AstFinal = Math.max(Ast, AstMin);
+
+    var aBar = Math.PI * barDia * barDia / 4;
+    var spacing = Math.floor((aBar / AstFinal) * 1000);
+    var spacingFinal = Math.min(spacing, 3 * d, 300);
+
+    var distBar = Math.max(8, Math.round(barDia * 0.6));
+    var AstDist = 0.12 / 100 * 1000 * D;
+    var distSpacing = Math.floor((Math.PI * distBar * distBar / 4 / AstDist) * 1000);
+
+    var divider = endCond === 'ss' ? '8' : '12';
+    document.getElementById('s1-results').innerHTML =
+        '<div class="calc-result-card glass-card">' +
+        '<h3><i class="bx bx-grid-horizontal" style="color:var(--accent-primary)"></i> One-Way Slab - Design Summary</h3>' +
+        '<div class="calc-formula">Mu = wu.L^2/' + divider + ' | Ast = (0.5.fck/fy)(1-sqrt(1-4.6Mu/fck.bd^2)).bd</div>' +
+        '<div class="calc-result-grid">' +
+        rv('Overall Depth (D)', D, 'mm', '') +
+        rv('Effective Depth (d)', d.toFixed(0), 'mm', 'green') +
+        rv('Self Weight', selfWt.toFixed(2), 'kN/m2', '') +
+        rv('Factored Load (wu)', wu.toFixed(2), 'kN/m2', 'orange') +
+        rv('Factored Moment (Mu)', Mu.toFixed(2), 'kN.m', '') +
+        rv('Mu,lim', Mulim.toFixed(2), 'kN.m', safe ? 'green' : 'red') +
+        rv('Ast Required', AstFinal.toFixed(0), 'mm2/m', 'purple') +
+        rv('Main Steel', barDia + ' dia @ ' + spacingFinal + ' c/c', 'mm', '') +
+        rv('Dist. Steel', distBar + ' dia @ ' + Math.min(distSpacing, 5 * D, 450) + ' c/c', 'mm', '') +
+        '</div>' +
+        '<div class="calc-note"><i class="bx bx-' + (safe ? 'check-circle' : 'x-circle') + '"></i> ' + (safe ? 'Singly reinforced - Mu < Mu,lim (SAFE)' : 'Doubly reinforced required - Mu > Mu,lim (WARNING)') + '</div>' +
+        '</div>';
+}
+
+// 5. Two-Way Slab Design (IS 456)
+function calcTwoWaySlab() {
+    var Lx = ri('s2-lx'), Ly = ri('s2-ly'), ll = ri('s2-ll'), ff = ri('s2-ff');
+    var fck = ri('s2-fck'), fy = ri('s2-fy');
+    var edgeCase = parseInt(document.getElementById('s2-edge').value);
+
+    var ratio = Ly / Lx;
+    if (ratio > 2) { toast('Warning', 'Ly/Lx > 2: This is a one-way slab. Use One-Way Slab calculator.', 'warning'); return; }
+
+    var d = Math.ceil((Lx * 1000) / 30);
+    var D = d + 25 + 5;
+    var selfWt = D / 1000 * 25;
+    var wu = 1.5 * (selfWt + ff + ll);
+
+    // IS 456 Table 26 approximate coefficients
+    var coeffTable = {
+        1: { axn: 0.032, axp: 0.024, ayn: 0.024, ayp: 0.018 },
+        2: { axn: 0.037, axp: 0.028, ayn: 0.028, ayp: 0.021 },
+        3: { axn: 0.037, axp: 0.028, ayn: 0.032, ayp: 0.024 },
+        4: { axn: 0.047, axp: 0.035, ayn: 0.035, ayp: 0.026 },
+        9: { axn: 0.000, axp: 0.056, ayn: 0.000, ayp: 0.042 }
+    };
+    var c = coeffTable[edgeCase] || coeffTable[2];
+    var MxN = c.axn * wu * Lx * Lx;
+    var MxP = c.axp * wu * Lx * Lx;
+    var MyN = c.ayn * wu * Lx * Lx;
+    var MyP = c.ayp * wu * Lx * Lx;
+
+    function slabSteel(Mu, dd) {
+        var ast = (0.5 * fck / fy) * (1 - Math.sqrt(1 - (4.6 * Mu * 1e6) / (fck * 1000 * dd * dd))) * 1000 * dd;
+        return Math.max(ast, 0.12 / 100 * 1000 * D);
+    }
+
+    var AstXN = slabSteel(MxN, d), AstXP = slabSteel(MxP, d);
+    var AstYN = slabSteel(MyN, d - 10), AstYP = slabSteel(MyP, d - 10);
+
+    document.getElementById('s2-results').innerHTML =
+        '<div class="calc-result-card glass-card">' +
+        '<h3><i class="bx bx-grid" style="color:var(--accent-primary)"></i> Two-Way Slab - Design Summary</h3>' +
+        '<div class="calc-formula">Mx = ax.w.Lx^2 | My = ay.w.Lx^2 (IS 456 Table 26)</div>' +
+        '<div class="calc-result-grid">' +
+        rv('Ly/Lx Ratio', ratio.toFixed(2), '', '') +
+        rv('Overall Depth (D)', D, 'mm', '') +
+        rv('Effective Depth (d)', d, 'mm', 'green') +
+        rv('Factored Load (wu)', wu.toFixed(2), 'kN/m2', 'orange') +
+        rv('Mx (-ve)', MxN.toFixed(2), 'kN.m', '') +
+        rv('Mx (+ve)', MxP.toFixed(2), 'kN.m', '') +
+        rv('My (-ve)', MyN.toFixed(2), 'kN.m', '') +
+        rv('My (+ve)', MyP.toFixed(2), 'kN.m', '') +
+        rv('Ast,x (support)', AstXN.toFixed(0), 'mm2/m', 'purple') +
+        rv('Ast,x (midspan)', AstXP.toFixed(0), 'mm2/m', 'purple') +
+        rv('Ast,y (support)', AstYN.toFixed(0), 'mm2/m', 'green') +
+        rv('Ast,y (midspan)', AstYP.toFixed(0), 'mm2/m', 'green') +
+        '</div>' +
+        '<div class="calc-note"><i class="bx bx-info-circle"></i> Coefficients from IS 456:2000, Table 26. Edge case ' + edgeCase + '. Ly/Lx = ' + ratio.toFixed(2) + '</div>' +
+        '</div>';
+}
+
+// 6. Column Design (IS 456)
+function calcColumn() {
+    var Pu = ri('col-pu'), fck = ri('col-fck'), fy = ri('col-fy');
+    var p = ri('col-p') / 100, colType = document.getElementById('col-type').value;
+    var Leff = ri('col-len');
+
+    var Ag = (Pu * 1000) / (0.4 * fck * (1 - p) + 0.67 * fy * p);
+    var Asc = p * Ag;
+
+    var b, D, dim = '';
+    if (colType === 'rect') {
+        b = Math.ceil(Math.sqrt(Ag) / 25) * 25;
+        D = Math.ceil(Ag / b / 25) * 25;
+        dim = b + ' x ' + D + ' mm';
+    } else {
+        var dia = Math.ceil(Math.sqrt(Ag * 4 / Math.PI) / 25) * 25;
+        b = D = dia;
+        dim = 'Dia ' + dia + ' mm';
+    }
+
+    var slenderness = (Leff * 1000) / (colType === 'rect' ? Math.min(b, D) : D);
+    var shortCol = slenderness <= 12;
+
+    var nBars = Math.max(colType === 'rect' ? 4 : 6, Math.ceil(Asc / (Math.PI * 16 * 16 / 4)));
+    var barDia = Math.ceil(Math.sqrt(Asc * 4 / (nBars * Math.PI)));
+    var tieBar = Math.max(6, Math.ceil(barDia / 4));
+    var tieSpacing = Math.min(300, 16 * barDia, colType === 'rect' ? Math.min(b, D) : D);
+
+    document.getElementById('col-results').innerHTML =
+        '<div class="calc-result-card glass-card">' +
+        '<h3><i class="bx bx-columns" style="color:var(--accent-primary)"></i> Column Design - IS 456</h3>' +
+        '<div class="calc-formula">Pu = 0.4.fck.Ac + 0.67.fy.Asc</div>' +
+        '<div class="calc-result-grid">' +
+        rv('Gross Area (Ag)', Ag.toFixed(0), 'mm2', '') +
+        rv('Column Size', dim, '', 'green') +
+        rv('Steel Area (Asc)', Asc.toFixed(0), 'mm2', 'orange') +
+        rv('Main Bars', nBars + '-' + barDia + ' dia', '', 'purple') +
+        rv('Ties', tieBar + ' dia @ ' + tieSpacing + ' c/c', 'mm', '') +
+        rv('Slenderness Ratio', slenderness.toFixed(1), '', '') +
+        rv('Column Category', shortCol ? 'Short Column' : 'Long Column', '', shortCol ? 'green' : 'red') +
+        rv('Capacity (Pu)', Pu.toFixed(0), 'kN', '') +
+        '</div>' +
+        '<div class="calc-note"><i class="bx bx-info-circle"></i> ' + (shortCol ? 'Short column (L/d <= 12).' : 'WARNING: Slender column! Consider additional moment due to slenderness.') + ' Min reinforcement: 0.8% | Max: 6% of Ag.</div>' +
+        '</div>';
+}
+
+// 7. Footing Design
+function calcFooting() {
+    var P = ri('ft-load'), colB = ri('ft-col-b'), colD = ri('ft-col-d');
+    var SBC = ri('ft-sbc'), fck = ri('ft-fck'), fy = ri('ft-fy');
+
+    var Pservice = P / 1.5;
+    var Af = (Pservice * 1.1) / SBC * 1e6;
+    var Lf = Math.ceil(Math.sqrt(Af) / 50) * 50;
+    var Bf = Lf;
+
+    var qu = (P * 1000) / (Lf * Bf);
+    var cantX = (Lf - colB) / 2;
+    var Mu = qu * Bf * cantX * cantX / 2 / 1e6;
+
+    var d = Math.ceil(Math.sqrt(Mu * 1e6 / (0.138 * fck * Bf)));
+    var D = Math.ceil((d + 50 + 8) / 50) * 50;
+    var dFinal = D - 50 - 8;
+
+    var Ast = (0.5 * fck / fy) * (1 - Math.sqrt(1 - (4.6 * Mu * 1e6) / (fck * Bf * dFinal * dFinal))) * Bf * dFinal;
+    var AstMin = 0.12 / 100 * Bf * D;
+    var AstFinal = Math.max(Ast, AstMin);
+    var nBars = Math.ceil(AstFinal / (Math.PI * 12 * 12 / 4));
+    var spacing = Math.floor(Bf / nBars);
+
+    var punchPerim = 2 * ((colB + dFinal) + (colD + dFinal));
+    var punchArea = (Lf * Bf) - (colB + dFinal) * (colD + dFinal);
+    var Vp = qu * punchArea / 1000;
+    var taup = (Vp * 1000) / (punchPerim * dFinal);
+    var tauAllow = 0.25 * Math.sqrt(fck);
+    var punchSafe = taup <= tauAllow;
+
+    document.getElementById('ft-results').innerHTML =
+        '<div class="calc-result-card glass-card">' +
+        '<h3><i class="bx bx-down-arrow-alt" style="color:var(--accent-primary)"></i> Isolated Footing - Design</h3>' +
+        '<div class="calc-formula">Af = 1.1P/SBC | Mu = qu.B.l^2/2 | Punching: tv <= 0.25*sqrt(fck)</div>' +
+        '<div class="calc-result-grid">' +
+        rv('Footing Size', Lf + ' x ' + Bf, 'mm', '') +
+        rv('Footing Depth (D)', D, 'mm', 'green') +
+        rv('Effective Depth (d)', dFinal, 'mm', '') +
+        rv('Soil Pressure (qu)', (qu / 1000).toFixed(2), 'kN/m2', 'orange') +
+        rv('Bending Moment (Mu)', Mu.toFixed(2), 'kN.m', '') +
+        rv('Steel Required (Ast)', AstFinal.toFixed(0), 'mm2', 'purple') +
+        rv('Reinforcement', nBars + '-12 dia @ ' + spacing + ' c/c', 'mm', '') +
+        rv('Punching Shear (tv)', taup.toFixed(2), 'MPa', punchSafe ? 'green' : 'red') +
+        rv('Allowable (tc)', tauAllow.toFixed(2), 'MPa', '') +
+        '</div>' +
+        '<div class="calc-note"><i class="bx bx-' + (punchSafe ? 'check-circle' : 'x-circle') + '"></i> Punching shear: ' + (punchSafe ? 'SAFE' : 'UNSAFE - Increase depth') + '</div>' +
+        '</div>';
+}
+
+// 8. Concrete Mix Design (IS 10262)
+function calcMixDesign() {
+    var grade = ri('mx-grade'), cementType = document.getElementById('mx-cement').value;
+    var aggSize = ri('mx-agg'), exposure = document.getElementById('mx-exp').value;
+    var slump = ri('mx-slump'), sgC = ri('mx-sg-c'), sgA = ri('mx-sg-a');
+
+    var sd = { 20: 4, 25: 4, 30: 5, 35: 5, 40: 5 };
+    var targetStr = grade + 1.65 * (sd[grade] || 5);
+
+    var minWC = { mild: 0.55, moderate: 0.50, severe: 0.45, vsevere: 0.40 };
+    var wc = minWC[exposure] || 0.50;
+
+    var baseWater = { 10: 208, 20: 186, 40: 165 };
+    var water = baseWater[aggSize] || 186;
+    water += (slump - 50) * 0.03 * water / 100 * 25;
+    water = Math.round(water);
+
+    var cement = Math.round(water / wc);
+    var minCement = { mild: 300, moderate: 300, severe: 320, vsevere: 360 };
+    var cementFinal = Math.max(cement, minCement[exposure] || 300);
+
+    var volCement = cementFinal / (sgC * 1000);
+    var volWater = water / 1000;
+    var volAir = 0.02;
+    var volAgg = 1 - volCement - volWater - volAir;
+
+    var pFA = { 10: 0.50, 20: 0.60, 40: 0.68 };
+    var faFrac = pFA[aggSize] || 0.60;
+    var volFA = volAgg * faFrac;
+    var volCA = volAgg * (1 - faFrac);
+
+    var fa = Math.round(volFA * sgA * 1000);
+    var ca = Math.round(volCA * sgA * 1000);
+
+    var ratioFA = (fa / cementFinal).toFixed(2), ratioCA = (ca / cementFinal).toFixed(2);
+
+    document.getElementById('mx-results').innerHTML =
+        '<div class="calc-result-card glass-card">' +
+        '<h3><i class="bx bx-test-tube" style="color:var(--accent-primary)"></i> Mix Design - M' + grade + ' (IS 10262)</h3>' +
+        '<div class="calc-formula">Target = fck + 1.65.S = ' + grade + ' + 1.65 x ' + (sd[grade] || 5) + ' = ' + targetStr.toFixed(1) + ' MPa</div>' +
+        '<div class="calc-result-grid">' +
+        rv('Target Strength', targetStr.toFixed(1), 'MPa', '') +
+        rv('W/C Ratio', wc.toFixed(2), '', 'green') +
+        rv('Water', water, 'kg/m3', 'orange') +
+        rv('Cement', cementFinal, 'kg/m3', 'purple') +
+        rv('Fine Aggregate', fa, 'kg/m3', '') +
+        rv('Coarse Aggregate', ca, 'kg/m3', '') +
+        rv('Mix Ratio', '1 : ' + ratioFA + ' : ' + ratioCA, '', 'green') +
+        rv('Cement Type', cementType, '', '') +
+        '</div></div>' +
+        '<div class="calc-result-card glass-card">' +
+        '<h3><i class="bx bx-cube" style="color:var(--accent-warning)"></i> Batch Quantities (per m3)</h3>' +
+        '<div class="calc-result-grid">' +
+        rv('Cement Bags', Math.ceil(cementFinal / 50), 'bags', '') +
+        rv('Water', water, 'litres', 'orange') +
+        rv('Sand (FA)', fa, 'kg', '') +
+        rv('Aggregate (CA)', ca, 'kg', '') +
+        rv('Total Weight', (cementFinal + fa + ca + water), 'kg/m3', '') +
+        rv('Density Check', ((cementFinal + fa + ca + water) / 2400 * 100).toFixed(0) + '% of 2400', 'kg/m3', '') +
+        '</div>' +
+        '<div class="calc-note"><i class="bx bx-info-circle"></i> Adjust water for aggregate moisture. Conduct trial mixes per IS 10262:2019.</div>' +
+        '</div>';
+}
+
+
+// ============================================================
 // MATERIAL GRADES & INVENTORY
 // ============================================================
 const CEMENT_GRADES = [
@@ -2054,5 +3522,329 @@ Keep response under 280 words. Use plain text.`;
     }
     btn.innerHTML = `<i class='bx bx-cart'></i> AI Reorder Plan`;
     btn.disabled = false;
+}
+
+// ============================================================
+// WEATHER-AWARE TASK SCHEDULING
+// ============================================================
+async function initWeatherAlerts() {
+    try {
+        projectsData = await API.getProjects();
+        const sel = document.getElementById('wa-project-filter');
+        sel.innerHTML = '<option value="">— Select Project —</option>';
+        projectsData.forEach(p => sel.innerHTML += `<option value="${p.id}">${p.name}</option>`);
+        if (projectsData.length > 0) sel.value = projectsData[0].id;
+    } catch (e) { toast('Error', 'Failed to load projects.', 'error'); }
+}
+
+async function loadWeatherAlerts() {
+    const projectId = document.getElementById('wa-project-filter').value;
+    if (!projectId) { toast('Select Project', 'Please select a project first.', 'warning'); return; }
+
+    const project = projectsData.find(p => p.id == projectId);
+    const lat = project?.latitude || 19.076;
+    const lon = project?.longitude || 72.8777;
+
+    // Load 7-day forecast
+    try {
+        const forecast = await API.getWeatherForecast(lat, lon);
+        const daily = forecast.daily;
+        if (daily) {
+            const grid = document.getElementById('wa-forecast-grid');
+            grid.innerHTML = '';
+            const weatherIcons = {
+                0: 'bx-sun', 1: 'bx-cloud-light-rain', 2: 'bx-cloud', 3: 'bx-cloud',
+                45: 'bx-cloud', 48: 'bx-cloud', 51: 'bx-cloud-drizzle', 53: 'bx-cloud-drizzle',
+                61: 'bx-cloud-rain', 63: 'bx-cloud-rain', 65: 'bx-cloud-rain',
+                71: 'bx-cloud-snow', 73: 'bx-cloud-snow', 80: 'bx-cloud-rain', 95: 'bx-cloud-lightning'
+            };
+
+            for (let i = 0; i < daily.time.length; i++) {
+                const date = new Date(daily.time[i]);
+                const dayName = date.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric' });
+                const code = daily.weather_code[i];
+                const icon = weatherIcons[code] || 'bx-cloud';
+                const precip = daily.precipitation_sum[i];
+                const wind = daily.wind_speed_10m_max[i];
+                const tempMax = daily.temperature_2m_max[i];
+                const tempMin = daily.temperature_2m_min[i];
+                const danger = precip > 10 || wind > 50 || tempMax > 45;
+                const warning = precip > 2 || wind > 30;
+
+                grid.innerHTML += `
+                    <div class="wa-day-card ${danger ? 'wa-danger' : warning ? 'wa-warning' : 'wa-safe'}">
+                        <div class="wa-day-name">${dayName}</div>
+                        <i class='bx ${icon}' style="font-size:2rem;"></i>
+                        <div class="wa-temps">${Math.round(tempMax)}° / ${Math.round(tempMin)}°</div>
+                        <div class="wa-detail"><i class='bx bx-droplet'></i> ${precip}mm</div>
+                        <div class="wa-detail"><i class='bx bx-wind'></i> ${Math.round(wind)}km/h</div>
+                    </div>`;
+            }
+        }
+    } catch (e) { toast('Error', 'Failed to load forecast.', 'error'); }
+
+    // Load weather alerts for tasks
+    try {
+        const alerts = await API.getWeatherAlerts(projectId);
+        const container = document.getElementById('wa-alerts-container');
+        if (alerts.length === 0) {
+            container.innerHTML = `<div class="empty-state"><p class="text-muted">✅ No weather conflicts found for weather-sensitive tasks in the forecast period.</p></div>`;
+        } else {
+            container.innerHTML = '';
+            alerts.forEach(a => {
+                container.innerHTML += `
+                    <div class="wa-alert-card glass-card ${a.severity === 'HIGH' ? 'wa-alert-high' : 'wa-alert-medium'}">
+                        <div class="wa-alert-header">
+                            <span class="badge ${a.severity === 'HIGH' ? 'status-delayed' : 'status-in_progress'}">${a.severity}</span>
+                            <span class="text-muted">${a.date}</span>
+                        </div>
+                        <h4>${a.taskName}</h4>
+                        <p><i class='bx bx-cloud-rain'></i> ${a.condition}</p>
+                        <p class="text-muted" style="font-size:0.8rem;margin-top:0.3rem;"><i class='bx bx-bulb'></i> ${a.recommendation}</p>
+                    </div>`;
+            });
+        }
+    } catch (e) { toast('Error', 'Failed to load alerts.', 'error'); }
+}
+
+// ============================================================
+// SUSTAINABILITY / CARBON FOOTPRINT TRACKER
+// ============================================================
+async function initSustainability() {
+    try {
+        projectsData = await API.getProjects();
+        const sel = document.getElementById('sus-project-filter');
+        sel.innerHTML = '<option value="">— Select Project —</option>';
+        projectsData.forEach(p => sel.innerHTML += `<option value="${p.id}">${p.name}</option>`);
+        if (projectsData.length > 0) sel.value = projectsData[0].id;
+    } catch (e) { toast('Error', 'Failed to load projects.', 'error'); }
+}
+
+async function loadSustainability() {
+    const projectId = document.getElementById('sus-project-filter').value;
+    if (!projectId) { toast('Select Project', 'Please select a project first.', 'warning'); return; }
+
+    try {
+        const report = await API.getSustainability(projectId);
+
+        document.getElementById('sus-empty').classList.add('hidden');
+        document.getElementById('sus-dashboard').classList.remove('hidden');
+
+        const gradeColors = { 'A+': '#10b981', 'A': '#10b981', 'B': '#3b82f6', 'C': '#f59e0b', 'D': '#ef4444', 'F': '#dc2626' };
+        document.getElementById('sus-grade').innerText = report.sustainabilityGrade;
+        document.getElementById('sus-grade').style.color = gradeColors[report.sustainabilityGrade] || 'inherit';
+        document.getElementById('sus-label').innerText = report.sustainabilityLabel;
+        document.getElementById('sus-total-co2').innerText = report.totalCO2Kg.toLocaleString() + ' kg';
+        document.getElementById('sus-co2-per-lakh').innerText = report.co2PerLakhBudget + ' kg CO₂ per ₹1L budget';
+        document.getElementById('sus-mat-co2').innerText = report.materialCO2Kg.toLocaleString() + ' kg';
+        document.getElementById('sus-equip-co2').innerText = report.equipmentCO2Kg.toLocaleString() + ' kg';
+        document.getElementById('sus-trees').innerText = report.treesNeededToOffset;
+
+        // Material breakdown
+        const matDiv = document.getElementById('sus-mat-breakdown');
+        if (report.materialBreakdown.length === 0) {
+            matDiv.innerHTML = '<p class="text-muted">No CO₂ data configured for materials. Set co2PerUnit on your materials.</p>';
+        } else {
+            let html = '<table class="data-table"><thead><tr><th>Material</th><th>Qty</th><th>CO₂/unit</th><th>Total CO₂</th></tr></thead><tbody>';
+            report.materialBreakdown.forEach(m => {
+                html += `<tr><td>${m.name}</td><td>${m.quantity}</td><td>${m.co2PerUnit} kg</td><td><strong>${m.totalCO2} kg</strong></td></tr>`;
+            });
+            html += '</tbody></table>';
+            matDiv.innerHTML = html;
+        }
+
+        // Equipment breakdown
+        const eqDiv = document.getElementById('sus-equip-breakdown');
+        if (report.equipmentBreakdown.length === 0) {
+            eqDiv.innerHTML = '<p class="text-muted">No CO₂ data configured for equipment. Set co2PerHour and hoursUsed on your equipment.</p>';
+        } else {
+            let html = '<table class="data-table"><thead><tr><th>Equipment</th><th>Hours</th><th>CO₂/hr</th><th>Total CO₂</th></tr></thead><tbody>';
+            report.equipmentBreakdown.forEach(e => {
+                html += `<tr><td>${e.name}</td><td>${e.hoursUsed}</td><td>${e.co2PerHour} kg</td><td><strong>${e.totalCO2} kg</strong></td></tr>`;
+            });
+            html += '</tbody></table>';
+            eqDiv.innerHTML = html;
+        }
+
+        toast('Sustainability', `Grade: ${report.sustainabilityGrade} (${report.sustainabilityLabel})`, 'success');
+    } catch (e) { toast('Error', 'Failed to load sustainability report.', 'error'); }
+}
+
+// ============================================================
+// GEOFENCE & EQUIPMENT ANTI-THEFT
+// ============================================================
+async function initGeofence() {
+    try {
+        projectsData = await API.getProjects();
+        const sel = document.getElementById('gf-project-filter');
+        sel.innerHTML = '<option value="">— Select Project —</option>';
+        projectsData.forEach(p => sel.innerHTML += `<option value="${p.id}">${p.name}</option>`);
+        if (projectsData.length > 0) sel.value = projectsData[0].id;
+    } catch (e) { toast('Error', 'Failed to load projects.', 'error'); }
+}
+
+async function loadGeofence() {
+    const projectId = document.getElementById('gf-project-filter').value;
+    if (!projectId) { toast('Select Project', 'Please select a project first.', 'warning'); return; }
+
+    try {
+        const status = await API.getGeofenceStatus(projectId);
+
+        document.getElementById('gf-empty').classList.add('hidden');
+        document.getElementById('gf-dashboard').classList.remove('hidden');
+
+        document.getElementById('gf-site-loc').innerText = status.siteLatitude && status.siteLongitude
+            ? `${status.siteLatitude.toFixed(4)}, ${status.siteLongitude.toFixed(4)}` : 'Not configured';
+        document.getElementById('gf-radius').innerText = status.geofenceRadius ? status.geofenceRadius + ' m' : 'Not set';
+
+        const equipment = status.equipment || [];
+        let safeCount = 0, breachCount = 0;
+        const tbody = document.getElementById('gf-equipment-tbody');
+        tbody.innerHTML = '';
+
+        equipment.forEach(e => {
+            if (e.withinFence === true) safeCount++;
+            else if (e.withinFence === false) breachCount++;
+
+            const statusBadge = e.withinFence === true ? '<span class="badge status-completed">✅ Safe</span>'
+                : e.withinFence === false ? '<span class="badge status-delayed">🚨 BREACH</span>'
+                    : '<span class="badge">📡 No Signal</span>';
+
+            tbody.innerHTML += `<tr>
+                <td><strong>${e.name}</strong></td>
+                <td>${e.latitude != null ? e.latitude.toFixed(6) : '—'}</td>
+                <td>${e.longitude != null ? e.longitude.toFixed(6) : '—'}</td>
+                <td>${e.distanceFromSite != null ? e.distanceFromSite + 'm' : '—'}</td>
+                <td>${statusBadge}</td>
+                <td>${e.lastPing ? new Date(e.lastPing).toLocaleString() : 'Never'}</td>
+                <td><button class="btn-icon" onclick="document.getElementById('gf-ping-eq-id').value=${e.id}" title="Set ID"><i class='bx bx-target-lock'></i></button></td>
+            </tr>`;
+        });
+
+        document.getElementById('gf-safe-count').innerText = safeCount;
+        document.getElementById('gf-breach-count').innerText = breachCount;
+
+        if (equipment.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No equipment found in this project.</td></tr>';
+        }
+    } catch (e) { toast('Error', 'Failed to load geo-fence status.', 'error'); }
+}
+
+async function simulateGPSPing() {
+    const eqId = document.getElementById('gf-ping-eq-id').value;
+    const lat = parseFloat(document.getElementById('gf-ping-lat').value);
+    const lon = parseFloat(document.getElementById('gf-ping-lon').value);
+
+    if (!eqId || isNaN(lat) || isNaN(lon)) {
+        toast('Validation', 'Please enter Equipment ID, Latitude, and Longitude.', 'warning');
+        return;
+    }
+
+    try {
+        const result = await API.pingEquipmentLocation(eqId, lat, lon);
+        const resultDiv = document.getElementById('gf-ping-result');
+
+        if (result.error) {
+            resultDiv.innerHTML = `<div class="glass-card" style="border-left:3px solid var(--accent-danger);padding:1rem;">${result.error}</div>`;
+            return;
+        }
+
+        const breached = result.breached;
+        resultDiv.innerHTML = `
+            <div class="glass-card" style="border-left:3px solid ${breached ? 'var(--accent-danger)' : 'var(--accent-success)'};padding:1rem;">
+                <h4>${breached ? '🚨 GEO-FENCE BREACH DETECTED!' : '✅ Equipment within safe zone'}</h4>
+                <p><strong>Equipment:</strong> ${result.equipmentName} (ID: ${result.equipmentId})</p>
+                <p><strong>Distance from site:</strong> ${result.distanceFromSite}m ${breached ? '(exceeds ' + result.geofenceRadius + 'm radius)' : ''}</p>
+                ${breached ? '<p style="color:var(--accent-danger);"><strong>⚠️ Critical issue auto-created!</strong></p>' : ''}
+            </div>`;
+
+        if (breached) {
+            toast('🚨 BREACH!', `${result.equipmentName} is ${result.distanceFromSite}m outside the geo-fence!`, 'error', 8000);
+        } else {
+            toast('✅ Safe', `${result.equipmentName} is within the geo-fence.`, 'success');
+        }
+
+        // Reload the status table
+        loadGeofence();
+    } catch (e) { toast('Error', 'Failed to send GPS ping.', 'error'); }
+}
+
+// ============================================================
+// AI CHAT WITH WEB SCRAPING FALLBACK
+// ============================================================
+async function sendAIChat() {
+    const input = document.getElementById('ai-chat-input');
+    const message = input.value.trim();
+    if (!message) return;
+
+    const messagesDiv = document.getElementById('ai-chat-messages');
+
+    // Add user message
+    messagesDiv.innerHTML += `
+        <div class="ai-chat-msg user-msg">
+            <div class="ai-chat-msg-content">
+                <strong>You</strong>
+                <p>${message}</p>
+            </div>
+        </div>`;
+
+    input.value = '';
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+    // Add loading indicator
+    const loadingId = 'ai-loading-' + Date.now();
+    messagesDiv.innerHTML += `
+        <div class="ai-chat-msg ai-msg" id="${loadingId}">
+            <div class="ai-chat-msg-content">
+                <strong>CivilTrack AI</strong>
+                <p><i class='bx bx-loader-alt bx-spin'></i> Thinking...</p>
+            </div>
+        </div>`;
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+    try {
+        const result = await API.aiChat(message);
+        const loadingEl = document.getElementById(loadingId);
+        if (loadingEl) loadingEl.remove();
+
+        const sourceLabel = result.source === 'AI' ? '🤖 AI Response'
+            : result.source === 'WEB_SCRAPE' ? '🌐 Web Search (AI unavailable)'
+                : '⚠️ System';
+        const sourceBadge = result.source === 'AI' ? 'status-completed'
+            : result.source === 'WEB_SCRAPE' ? 'status-in_progress'
+                : 'status-delayed';
+
+        const formattedResponse = result.response.replace(/\n/g, '<br>');
+
+        messagesDiv.innerHTML += `
+            <div class="ai-chat-msg ai-msg">
+                <div class="ai-chat-msg-content">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+                        <strong>CivilTrack AI</strong>
+                        <span class="badge ${sourceBadge}" style="font-size:0.7rem;">${sourceLabel}</span>
+                    </div>
+                    <p>${formattedResponse}</p>
+                </div>
+            </div>`;
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+        // Update source indicator in header
+        const sourceEl = document.getElementById('ai-chat-source');
+        sourceEl.style.display = '';
+        sourceEl.innerText = result.source === 'AI' ? '🤖 AI' : '🌐 Web';
+        sourceEl.className = `badge ${sourceBadge}`;
+
+    } catch (e) {
+        const loadingEl = document.getElementById(loadingId);
+        if (loadingEl) loadingEl.remove();
+        messagesDiv.innerHTML += `
+            <div class="ai-chat-msg ai-msg">
+                <div class="ai-chat-msg-content">
+                    <strong>CivilTrack AI</strong>
+                    <p style="color:var(--accent-danger);">Sorry, I encountered an error. Please try again.</p>
+                </div>
+            </div>`;
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
 }
 

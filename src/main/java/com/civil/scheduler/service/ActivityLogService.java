@@ -36,4 +36,15 @@ public class ActivityLogService {
     public void broadcastProjectUpdate(Long projectId) {
         messagingTemplate.convertAndSend("/topic/projects/" + projectId + "/update", "UPDATE");
     }
+
+    /**
+     * Simple system log (no user context). Used by automated services like
+     * GeofenceService.
+     */
+    @Transactional
+    public void log(String message) {
+        ActivityLog log = new ActivityLog(null, null, null, message);
+        activityLogRepository.save(log);
+        messagingTemplate.convertAndSend("/topic/updates", log);
+    }
 }

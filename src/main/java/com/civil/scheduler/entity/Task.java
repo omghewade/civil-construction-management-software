@@ -55,6 +55,9 @@ public class Task {
     @Column(nullable = false)
     private TaskStatus status = TaskStatus.NOT_STARTED;
 
+    @Column(name = "weather_sensitive")
+    private Boolean weatherSensitive = false;
+
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     @com.fasterxml.jackson.annotation.JsonManagedReference(value = "task-subtasks")
     private List<SubTask> subTasks = new ArrayList<>();
@@ -142,6 +145,14 @@ public class Task {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public Boolean getWeatherSensitive() {
+        return weatherSensitive;
+    }
+
+    public void setWeatherSensitive(Boolean weatherSensitive) {
+        this.weatherSensitive = weatherSensitive;
     }
 
     public List<SubTask> getSubTasks() {

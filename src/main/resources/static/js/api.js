@@ -54,5 +54,23 @@ const API = {
     // ---- Weather (OpenMeteo, no API key needed, defaults Mumbai coords) ----
     getWeather: (lat = 19.076, lon = 72.8777) =>
         fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,precipitation,weather_code&timezone=auto`)
-            .then(r => r.json())
+            .then(r => r.json()),
+
+    // ---- Weather Alerts (Smart scheduling) ----
+    getWeatherAlerts: (projectId) => fetchAPI(`/api/weather/alerts/${projectId}`),
+    getWeatherForecast: (lat = 19.076, lon = 72.8777) => fetchAPI(`/api/weather/forecast?lat=${lat}&lon=${lon}`),
+
+    // ---- Sustainability / Carbon Tracker ----
+    getSustainability: (projectId) => fetchAPI(`/api/sustainability/${projectId}`),
+
+    // ---- Geofence ----
+    getGeofenceStatus: (projectId) => fetchAPI(`/api/geofence/${projectId}/status`),
+    pingEquipmentLocation: (equipId, lat, lon) => fetchAPI(`/api/equipment/${equipId}/ping-location`, {
+        method: 'POST', body: JSON.stringify({ latitude: lat, longitude: lon })
+    }),
+
+    // ---- AI Chat (with web scraping fallback) ----
+    aiChat: (message) => fetchAPI('/api/ai/chat', {
+        method: 'POST', body: JSON.stringify({ message })
+    })
 };

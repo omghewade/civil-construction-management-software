@@ -8,7 +8,7 @@
     <meta name="description"
         content="Enterprise construction project management platform for real-time tracking of projects, tasks, resources, and site conditions.">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
-    <link rel="stylesheet" href="/css/style.css?v=3">
+    <link rel="stylesheet" href="/css/style.css?v=4">
 </head>
 
 <body>
@@ -100,6 +100,25 @@
                 </a>
                 <a href="#" class="nav-item" data-view="bio-cement" id="nav-bio-cement">
                     <i class='bx bx-leaf'></i> Bio-Cement Lab
+                </a>
+                <a href="#" class="nav-item" data-view="cad-converter" id="nav-cad-converter">
+                    <i class='bx bx-vector'></i> CAD Converter
+                </a>
+                <a href="#" class="nav-item" data-view="calculators" id="nav-calculators">
+                    <i class='bx bx-calculator'></i> Calculators
+                </a>
+                <span class="nav-section-label" style="margin-top:0.5rem;">Smart Features</span>
+                <a href="#" class="nav-item" data-view="weather-alerts" id="nav-weather-alerts">
+                    <i class='bx bx-cloud-lightning'></i> Weather Alerts
+                </a>
+                <a href="#" class="nav-item" data-view="sustainability" id="nav-sustainability">
+                    <i class='bx bx-leaf'></i> Carbon Tracker
+                </a>
+                <a href="#" class="nav-item" data-view="geofence" id="nav-geofence">
+                    <i class='bx bx-map-pin'></i> Geo-fence
+                </a>
+                <a href="#" class="nav-item" data-view="ai-chat" id="nav-ai-chat">
+                    <i class='bx bx-bot'></i> AI Chat
                 </a>
                 <span class="nav-section-label" style="margin-top:0.5rem;">Admin</span>
                 <a href="#" class="nav-item" data-view="users" id="nav-users" class="admin-only">
@@ -718,6 +737,789 @@
                 </div>
             </div>
 
+            <!-- ===== CAD CONVERTER VIEW ===== -->
+            <div id="view-cad-converter" class="view-content hidden">
+                <!-- Upload Section -->
+                <div class="cad-upload-section glass-card" id="cad-upload-section">
+                    <div class="cad-upload-zone" id="cad-upload-zone">
+                        <div class="cad-upload-icon">
+                            <i class='bx bx-cloud-upload'></i>
+                        </div>
+                        <h3>Upload AutoCAD DXF File</h3>
+                        <p class="text-muted">Drag & drop your <strong>.dxf</strong> file here, or click to browse</p>
+                        <p class="text-muted" style="font-size:0.75rem;margin-top:0.3rem;">Export from AutoCAD: File →
+                            Save As →
+                            DXF format</p>
+                        <input type="file" id="cad-file-input" accept=".dxf" style="display:none;">
+                        <button class="btn btn-primary" id="cad-browse-btn" style="margin-top:1rem;">
+                            <i class='bx bx-folder-open'></i> Browse Files
+                        </button>
+                        <button class="btn btn-secondary" id="cad-demo-btn" style="margin-top:0.5rem;">
+                            <i class='bx bx-play'></i> Load Demo Design
+                        </button>
+                    </div>
+                    <div id="cad-file-info" class="cad-file-info hidden">
+                        <i class='bx bx-file'></i>
+                        <span id="cad-file-name">—</span>
+                        <span id="cad-entity-count" class="badge">0 entities</span>
+                        <button class="btn btn-secondary btn-sm" id="cad-clear-btn"><i class='bx bx-x'></i>
+                            Clear</button>
+                    </div>
+                </div>
+
+                <!-- Main CAD workspace (hidden until file loaded) -->
+                <div id="cad-workspace" class="hidden">
+                    <!-- Design Layouts Section -->
+                    <div class="glass-card" style="margin-bottom:1.2rem;">
+                        <div class="table-toolbar">
+                            <h3><i class='bx bx-palette'></i> Design Layouts</h3>
+                            <p class="text-muted" style="font-size:0.8rem;">Different visual interpretations of your CAD
+                                design</p>
+                        </div>
+                        <div class="cad-themes-grid" id="cad-themes-grid"></div>
+                    </div>
+
+                    <!-- 2D + 3D split view -->
+                    <div class="cad-viewer-split">
+                        <!-- 2D Panel -->
+                        <div class="cad-panel glass-card">
+                            <div class="cad-panel-header">
+                                <h3><i class='bx bx-shape-square'></i> 2D Design View</h3>
+                                <div style="display:flex;gap:0.5rem;">
+                                    <select id="cad-theme-select" class="form-select" style="width:auto;">
+                                        <option value="blueprint">Blueprint</option>
+                                        <option value="modern">Modern Dark</option>
+                                        <option value="classic">Classic B/W</option>
+                                        <option value="construction">Construction</option>
+                                        <option value="architectural">Architectural</option>
+                                    </select>
+                                    <button class="btn btn-secondary btn-sm" onclick="exportCADSVG()">
+                                        <i class='bx bx-download'></i> SVG
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="cad-2d-canvas" id="cad-2d-canvas"></div>
+                        </div>
+
+                        <!-- 3D Panel -->
+                        <div class="cad-panel glass-card">
+                            <div class="cad-panel-header">
+                                <h3><i class='bx bx-cube'></i> 3D Model View</h3>
+                                <div style="display:flex;gap:0.5rem;align-items:center;">
+                                    <div class="input-group" style="margin:0;">
+                                        <label style="font-size:0.7rem;margin-bottom:0;">Height</label>
+                                        <input type="range" id="cad-extrude-height" min="1" max="50" value="10"
+                                            style="width:100px;">
+                                    </div>
+                                    <button class="btn btn-secondary btn-sm" onclick="export3DScreenshot()">
+                                        <i class='bx bx-camera'></i> PNG
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="cad-3d-canvas" id="cad-3d-canvas"></div>
+                        </div>
+                    </div>
+
+                    <!-- Entity Summary -->
+                    <div class="glass-card" style="margin-top:1.2rem;">
+                        <div class="table-toolbar">
+                            <h3><i class='bx bx-list-ul'></i> Detected Entities</h3>
+                            <button class="btn btn-secondary btn-sm" onclick="exportCADEntitiesCSV()">
+                                <i class='bx bx-export'></i> Export CSV
+                            </button>
+                        </div>
+                        <div class="cad-entity-stats" id="cad-entity-stats"></div>
+                        <div class="table-container" style="max-height:300px;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Type</th>
+                                        <th>Layer</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cad-entities-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== CONSTRUCTION CALCULATORS VIEW ===== -->
+            <div id="view-calculators" class="view-content hidden">
+                <!-- Calculator tabs -->
+                <div class="calc-tabs glass-card" style="margin-bottom:1.2rem;">
+                    <button class="calc-tab active" data-calc="bending" onclick="switchCalcTab(this,'bending')">
+                        <i class='bx bx-shape-triangle'></i> Bending Moment
+                    </button>
+                    <button class="calc-tab" data-calc="stress" onclick="switchCalcTab(this,'stress')">
+                        <i class='bx bx-expand'></i> Stress & Strain
+                    </button>
+                    <button class="calc-tab" data-calc="section" onclick="switchCalcTab(this,'section')">
+                        <i class='bx bx-square'></i> Section Modulus
+                    </button>
+                    <button class="calc-tab" data-calc="slab1" onclick="switchCalcTab(this,'slab1')">
+                        <i class='bx bx-grid-horizontal'></i> One-Way Slab
+                    </button>
+                    <button class="calc-tab" data-calc="slab2" onclick="switchCalcTab(this,'slab2')">
+                        <i class='bx bx-grid'></i> Two-Way Slab
+                    </button>
+                    <button class="calc-tab" data-calc="column" onclick="switchCalcTab(this,'column')">
+                        <i class='bx bx-columns'></i> Column Design
+                    </button>
+                    <button class="calc-tab" data-calc="footing" onclick="switchCalcTab(this,'footing')">
+                        <i class='bx bx-down-arrow-alt'></i> Footing Design
+                    </button>
+                    <button class="calc-tab" data-calc="mixdesign" onclick="switchCalcTab(this,'mixdesign')">
+                        <i class='bx bx-test-tube'></i> Mix Design
+                    </button>
+                </div>
+
+                <!-- BENDING MOMENT -->
+                <div id="calc-bending" class="calc-content">
+                    <div class="calc-layout">
+                        <div class="calc-input-panel glass-card">
+                            <h3 style="margin-bottom:1rem;"><i class='bx bx-shape-triangle'></i> Bending Moment
+                                Calculator</h3>
+                            <div class="input-group">
+                                <label>Beam Type</label>
+                                <select id="bm-beam-type" class="form-select">
+                                    <option value="ss-point">Simply Supported – Point Load (Center)</option>
+                                    <option value="ss-udl">Simply Supported – UDL</option>
+                                    <option value="cant-point">Cantilever – Point Load (Free End)</option>
+                                    <option value="cant-udl">Cantilever – UDL</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Span Length, L (m)</label>
+                                <input type="number" id="bm-span" class="form-control" value="6" min="0.1" step="0.1">
+                            </div>
+                            <div class="input-group">
+                                <label id="bm-load-label">Point Load, P (kN)</label>
+                                <input type="number" id="bm-load" class="form-control" value="50" min="0" step="0.1">
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="calcBendingMoment()"
+                                style="margin-top:0.5rem;">
+                                <i class='bx bx-calculator'></i> Calculate
+                            </button>
+                        </div>
+                        <div class="calc-result-panel" id="bm-results">
+                            <div class="calc-placeholder glass-card"><i class='bx bx-calculator'
+                                    style="font-size:2.5rem;color:var(--accent-primary);margin-bottom:0.8rem;"></i>
+                                <h3>Bending Moment Calculator</h3>
+                                <p class="text-muted" style="margin-top:0.5rem;">Select beam type and enter loads to
+                                    calculate bending moment, shear force, and reactions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STRESS & STRAIN -->
+                <div id="calc-stress" class="calc-content hidden">
+                    <div class="calc-layout">
+                        <div class="calc-input-panel glass-card">
+                            <h3 style="margin-bottom:1rem;"><i class='bx bx-expand'></i> Stress & Strain Calculator</h3>
+                            <div class="input-group">
+                                <label>Applied Load, P (kN)</label>
+                                <input type="number" id="ss-load" class="form-control" value="100" min="0" step="0.1">
+                            </div>
+                            <div class="input-group">
+                                <label>Cross-Sectional Area, A (mm²)</label>
+                                <input type="number" id="ss-area" class="form-control" value="500" min="0.1" step="0.1">
+                            </div>
+                            <div class="input-group">
+                                <label>Original Length, L₀ (mm)</label>
+                                <input type="number" id="ss-length" class="form-control" value="1000" min="0.1"
+                                    step="0.1">
+                            </div>
+                            <div class="input-group">
+                                <label>Change in Length, ΔL (mm)</label>
+                                <input type="number" id="ss-delta" class="form-control" value="0.5" min="0" step="0.01">
+                            </div>
+                            <div class="input-group">
+                                <label>Young's Modulus, E (GPa)</label>
+                                <input type="number" id="ss-modulus" class="form-control" value="200" min="0.1"
+                                    step="0.1">
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="calcStressStrain()"
+                                style="margin-top:0.5rem;">
+                                <i class='bx bx-calculator'></i> Calculate
+                            </button>
+                        </div>
+                        <div class="calc-result-panel" id="ss-results">
+                            <div class="calc-placeholder glass-card"><i class='bx bx-expand'
+                                    style="font-size:2.5rem;color:var(--accent-primary);margin-bottom:0.8rem;"></i>
+                                <h3>Stress & Strain Calculator</h3>
+                                <p class="text-muted" style="margin-top:0.5rem;">Enter load and section properties to
+                                    calculate stress, strain, and deformation.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION MODULUS -->
+                <div id="calc-section" class="calc-content hidden">
+                    <div class="calc-layout">
+                        <div class="calc-input-panel glass-card">
+                            <h3 style="margin-bottom:1rem;"><i class='bx bx-square'></i> Section Modulus Calculator</h3>
+                            <div class="input-group">
+                                <label>Section Shape</label>
+                                <select id="sm-shape" class="form-select" onchange="toggleSMInputs()">
+                                    <option value="rectangular">Rectangular Section</option>
+                                    <option value="circular">Circular Section</option>
+                                    <option value="hollow-rect">Hollow Rectangular</option>
+                                    <option value="hollow-circ">Hollow Circular</option>
+                                    <option value="i-section">I-Section / H-Section</option>
+                                </select>
+                            </div>
+                            <div id="sm-rect-inputs">
+                                <div class="input-group"><label>Width, b (mm)</label><input type="number" id="sm-b"
+                                        class="form-control" value="300" min="1"></div>
+                                <div class="input-group"><label>Depth, d (mm)</label><input type="number" id="sm-d"
+                                        class="form-control" value="500" min="1"></div>
+                            </div>
+                            <div id="sm-circ-inputs" class="hidden">
+                                <div class="input-group"><label>Diameter, D (mm)</label><input type="number" id="sm-dia"
+                                        class="form-control" value="400" min="1"></div>
+                            </div>
+                            <div id="sm-hollow-rect-inputs" class="hidden">
+                                <div class="input-group"><label>Outer Width, B (mm)</label><input type="number"
+                                        id="sm-B" class="form-control" value="300" min="1"></div>
+                                <div class="input-group"><label>Outer Depth, D (mm)</label><input type="number"
+                                        id="sm-D" class="form-control" value="500" min="1"></div>
+                                <div class="input-group"><label>Inner Width, b (mm)</label><input type="number"
+                                        id="sm-bi" class="form-control" value="260" min="1"></div>
+                                <div class="input-group"><label>Inner Depth, d (mm)</label><input type="number"
+                                        id="sm-di" class="form-control" value="460" min="1"></div>
+                            </div>
+                            <div id="sm-hollow-circ-inputs" class="hidden">
+                                <div class="input-group"><label>Outer Diameter, D (mm)</label><input type="number"
+                                        id="sm-Do" class="form-control" value="400" min="1"></div>
+                                <div class="input-group"><label>Inner Diameter, d (mm)</label><input type="number"
+                                        id="sm-di2" class="form-control" value="350" min="1"></div>
+                            </div>
+                            <div id="sm-i-inputs" class="hidden">
+                                <div class="input-group"><label>Flange Width, bf (mm)</label><input type="number"
+                                        id="sm-bf" class="form-control" value="200" min="1"></div>
+                                <div class="input-group"><label>Total Depth, d (mm)</label><input type="number"
+                                        id="sm-id" class="form-control" value="400" min="1"></div>
+                                <div class="input-group"><label>Flange Thickness, tf (mm)</label><input type="number"
+                                        id="sm-tf" class="form-control" value="15" min="1"></div>
+                                <div class="input-group"><label>Web Thickness, tw (mm)</label><input type="number"
+                                        id="sm-tw" class="form-control" value="10" min="1"></div>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="calcSectionModulus()"
+                                style="margin-top:0.5rem;">
+                                <i class='bx bx-calculator'></i> Calculate
+                            </button>
+                        </div>
+                        <div class="calc-result-panel" id="sm-results">
+                            <div class="calc-placeholder glass-card"><i class='bx bx-square'
+                                    style="font-size:2.5rem;color:var(--accent-primary);margin-bottom:0.8rem;"></i>
+                                <h3>Section Modulus Calculator</h3>
+                                <p class="text-muted" style="margin-top:0.5rem;">Select section shape and enter
+                                    dimensions to get moment of inertia, section modulus, and radius of gyration.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ONE-WAY SLAB -->
+                <div id="calc-slab1" class="calc-content hidden">
+                    <div class="calc-layout">
+                        <div class="calc-input-panel glass-card">
+                            <h3 style="margin-bottom:1rem;"><i class='bx bx-grid-horizontal'></i> One-Way Slab Design
+                                (IS 456)</h3>
+                            <div class="input-group"><label>Clear Span, L (m)</label><input type="number" id="s1-span"
+                                    class="form-control" value="4" min="0.5" step="0.1"></div>
+                            <div class="input-group"><label>Live Load (kN/m²)</label><input type="number" id="s1-ll"
+                                    class="form-control" value="3" min="0" step="0.1"></div>
+                            <div class="input-group"><label>Floor Finish (kN/m²)</label><input type="number" id="s1-ff"
+                                    class="form-control" value="1.5" min="0" step="0.1"></div>
+                            <div class="input-group"><label>Concrete Grade, fck (MPa)</label>
+                                <select id="s1-fck" class="form-select">
+                                    <option value="20">M20</option>
+                                    <option value="25" selected>M25</option>
+                                    <option value="30">M30</option>
+                                    <option value="35">M35</option>
+                                </select>
+                            </div>
+                            <div class="input-group"><label>Steel Grade, fy (MPa)</label>
+                                <select id="s1-fy" class="form-select">
+                                    <option value="415" selected>Fe 415</option>
+                                    <option value="500">Fe 500</option>
+                                    <option value="550">Fe 550</option>
+                                </select>
+                            </div>
+                            <div class="input-group"><label>Bar Diameter (mm)</label><input type="number" id="s1-bar"
+                                    class="form-control" value="10" min="6" max="32"></div>
+                            <div class="input-group"><label>End Condition</label>
+                                <select id="s1-end" class="form-select">
+                                    <option value="ss">Simply Supported</option>
+                                    <option value="cont" selected>Continuous</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="calcOneWaySlab()"
+                                style="margin-top:0.5rem;">
+                                <i class='bx bx-calculator'></i> Design Slab
+                            </button>
+                        </div>
+                        <div class="calc-result-panel" id="s1-results">
+                            <div class="calc-placeholder glass-card"><i class='bx bx-grid-horizontal'
+                                    style="font-size:2.5rem;color:var(--accent-primary);margin-bottom:0.8rem;"></i>
+                                <h3>One-Way Slab Design</h3>
+                                <p class="text-muted" style="margin-top:0.5rem;">Enter span, loads, and material grades
+                                    to design a one-way slab per IS 456.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TWO-WAY SLAB -->
+                <div id="calc-slab2" class="calc-content hidden">
+                    <div class="calc-layout">
+                        <div class="calc-input-panel glass-card">
+                            <h3 style="margin-bottom:1rem;"><i class='bx bx-grid'></i> Two-Way Slab Design (IS 456)</h3>
+                            <div class="input-group"><label>Short Span, Lx (m)</label><input type="number" id="s2-lx"
+                                    class="form-control" value="4" min="0.5" step="0.1"></div>
+                            <div class="input-group"><label>Long Span, Ly (m)</label><input type="number" id="s2-ly"
+                                    class="form-control" value="5" min="0.5" step="0.1"></div>
+                            <div class="input-group"><label>Live Load (kN/m²)</label><input type="number" id="s2-ll"
+                                    class="form-control" value="3" min="0" step="0.1"></div>
+                            <div class="input-group"><label>Floor Finish (kN/m²)</label><input type="number" id="s2-ff"
+                                    class="form-control" value="1.5" min="0" step="0.1"></div>
+                            <div class="input-group"><label>Concrete Grade, fck (MPa)</label>
+                                <select id="s2-fck" class="form-select">
+                                    <option value="20">M20</option>
+                                    <option value="25" selected>M25</option>
+                                    <option value="30">M30</option>
+                                    <option value="35">M35</option>
+                                </select>
+                            </div>
+                            <div class="input-group"><label>Steel Grade, fy (MPa)</label>
+                                <select id="s2-fy" class="form-select">
+                                    <option value="415" selected>Fe 415</option>
+                                    <option value="500">Fe 500</option>
+                                    <option value="550">Fe 550</option>
+                                </select>
+                            </div>
+                            <div class="input-group"><label>Edge Condition</label>
+                                <select id="s2-edge" class="form-select">
+                                    <option value="1">All edges continuous</option>
+                                    <option value="2" selected>One short edge discontinuous</option>
+                                    <option value="3">One long edge discontinuous</option>
+                                    <option value="4">Two adjacent edges discontinuous</option>
+                                    <option value="9">All edges simply supported</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="calcTwoWaySlab()"
+                                style="margin-top:0.5rem;">
+                                <i class='bx bx-calculator'></i> Design Slab
+                            </button>
+                        </div>
+                        <div class="calc-result-panel" id="s2-results">
+                            <div class="calc-placeholder glass-card"><i class='bx bx-grid'
+                                    style="font-size:2.5rem;color:var(--accent-primary);margin-bottom:0.8rem;"></i>
+                                <h3>Two-Way Slab Design</h3>
+                                <p class="text-muted" style="margin-top:0.5rem;">Enter span dimensions, loads, and edge
+                                    conditions for two-way slab design per IS 456.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMN DESIGN -->
+                <div id="calc-column" class="calc-content hidden">
+                    <div class="calc-layout">
+                        <div class="calc-input-panel glass-card">
+                            <h3 style="margin-bottom:1rem;"><i class='bx bx-columns'></i> Short Column Design (IS 456)
+                            </h3>
+                            <div class="input-group"><label>Axial Load, Pu (kN)</label><input type="number" id="col-pu"
+                                    class="form-control" value="1500" min="0"></div>
+                            <div class="input-group"><label>Concrete Grade, fck (MPa)</label>
+                                <select id="col-fck" class="form-select">
+                                    <option value="20">M20</option>
+                                    <option value="25" selected>M25</option>
+                                    <option value="30">M30</option>
+                                    <option value="35">M35</option>
+                                    <option value="40">M40</option>
+                                </select>
+                            </div>
+                            <div class="input-group"><label>Steel Grade, fy (MPa)</label>
+                                <select id="col-fy" class="form-select">
+                                    <option value="415" selected>Fe 415</option>
+                                    <option value="500">Fe 500</option>
+                                </select>
+                            </div>
+                            <div class="input-group"><label>Steel Percentage, p (%)</label><input type="number"
+                                    id="col-p" class="form-control" value="2" min="0.8" max="6" step="0.1"></div>
+                            <div class="input-group"><label>Column Type</label>
+                                <select id="col-type" class="form-select">
+                                    <option value="rect" selected>Rectangular</option>
+                                    <option value="circ">Circular</option>
+                                </select>
+                            </div>
+                            <div class="input-group"><label>Unsupported Length (m)</label><input type="number"
+                                    id="col-len" class="form-control" value="3" min="0.5" step="0.1"></div>
+                            <button class="btn btn-primary btn-block" onclick="calcColumn()" style="margin-top:0.5rem;">
+                                <i class='bx bx-calculator'></i> Design Column
+                            </button>
+                        </div>
+                        <div class="calc-result-panel" id="col-results">
+                            <div class="calc-placeholder glass-card"><i class='bx bx-columns'
+                                    style="font-size:2.5rem;color:var(--accent-primary);margin-bottom:0.8rem;"></i>
+                                <h3>Column Design</h3>
+                                <p class="text-muted" style="margin-top:0.5rem;">Enter axial load and material
+                                    properties to design a short column per IS 456.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FOOTING DESIGN -->
+                <div id="calc-footing" class="calc-content hidden">
+                    <div class="calc-layout">
+                        <div class="calc-input-panel glass-card">
+                            <h3 style="margin-bottom:1rem;"><i class='bx bx-down-arrow-alt'></i> Isolated Footing Design
+                            </h3>
+                            <div class="input-group"><label>Column Load, P (kN)</label><input type="number" id="ft-load"
+                                    class="form-control" value="800" min="0"></div>
+                            <div class="input-group"><label>Column Size (mm × mm)</label>
+                                <div class="input-row"><input type="number" id="ft-col-b" class="form-control"
+                                        value="400" min="100" style="flex:1;"><input type="number" id="ft-col-d"
+                                        class="form-control" value="400" min="100" style="flex:1;"></div>
+                            </div>
+                            <div class="input-group"><label>Safe Bearing Capacity, SBC (kN/m²)</label><input
+                                    type="number" id="ft-sbc" class="form-control" value="200" min="50"></div>
+                            <div class="input-group"><label>Concrete Grade, fck (MPa)</label>
+                                <select id="ft-fck" class="form-select">
+                                    <option value="20" selected>M20</option>
+                                    <option value="25">M25</option>
+                                    <option value="30">M30</option>
+                                </select>
+                            </div>
+                            <div class="input-group"><label>Steel Grade, fy (MPa)</label>
+                                <select id="ft-fy" class="form-select">
+                                    <option value="415" selected>Fe 415</option>
+                                    <option value="500">Fe 500</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="calcFooting()"
+                                style="margin-top:0.5rem;">
+                                <i class='bx bx-calculator'></i> Design Footing
+                            </button>
+                        </div>
+                        <div class="calc-result-panel" id="ft-results">
+                            <div class="calc-placeholder glass-card"><i class='bx bx-down-arrow-alt'
+                                    style="font-size:2.5rem;color:var(--accent-primary);margin-bottom:0.8rem;"></i>
+                                <h3>Footing Design</h3>
+                                <p class="text-muted" style="margin-top:0.5rem;">Enter column load, size, and soil
+                                    bearing capacity to design an isolated footing.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONCRETE MIX DESIGN -->
+                <div id="calc-mixdesign" class="calc-content hidden">
+                    <div class="calc-layout">
+                        <div class="calc-input-panel glass-card">
+                            <h3 style="margin-bottom:1rem;"><i class='bx bx-test-tube'></i> Concrete Mix Design (IS
+                                10262)</h3>
+                            <div class="input-group"><label>Target Grade</label>
+                                <select id="mx-grade" class="form-select">
+                                    <option value="20">M20</option>
+                                    <option value="25" selected>M25</option>
+                                    <option value="30">M30</option>
+                                    <option value="35">M35</option>
+                                    <option value="40">M40</option>
+                                </select>
+                            </div>
+                            <div class="input-group"><label>Cement Type</label>
+                                <select id="mx-cement" class="form-select">
+                                    <option value="OPC43" selected>OPC 43</option>
+                                    <option value="OPC53">OPC 53</option>
+                                    <option value="PPC">PPC</option>
+                                </select>
+                            </div>
+                            <div class="input-group"><label>Max Aggregate Size (mm)</label>
+                                <select id="mx-agg" class="form-select">
+                                    <option value="10">10 mm</option>
+                                    <option value="20" selected>20 mm</option>
+                                    <option value="40">40 mm</option>
+                                </select>
+                            </div>
+                            <div class="input-group"><label>Exposure Condition</label>
+                                <select id="mx-exp" class="form-select">
+                                    <option value="mild">Mild</option>
+                                    <option value="moderate" selected>Moderate</option>
+                                    <option value="severe">Severe</option>
+                                    <option value="vsevere">Very Severe</option>
+                                </select>
+                            </div>
+                            <div class="input-group"><label>Workability / Slump (mm)</label><input type="number"
+                                    id="mx-slump" class="form-control" value="100" min="25" max="200" step="5"></div>
+                            <div class="input-group"><label>Specific Gravity — Cement</label><input type="number"
+                                    id="mx-sg-c" class="form-control" value="3.15" min="2.5" max="3.5" step="0.01">
+                            </div>
+                            <div class="input-group"><label>Specific Gravity — Aggregate</label><input type="number"
+                                    id="mx-sg-a" class="form-control" value="2.65" min="2.0" max="3.0" step="0.01">
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="calcMixDesign()"
+                                style="margin-top:0.5rem;">
+                                <i class='bx bx-calculator'></i> Design Mix
+                            </button>
+                        </div>
+                        <div class="calc-result-panel" id="mx-results">
+                            <div class="calc-placeholder glass-card"><i class='bx bx-test-tube'
+                                    style="font-size:2.5rem;color:var(--accent-primary);margin-bottom:0.8rem;"></i>
+                                <h3>Concrete Mix Design</h3>
+                                <p class="text-muted" style="margin-top:0.5rem;">Select grade, exposure, and aggregate
+                                    properties to generate a mix design per IS 10262.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== WEATHER ALERTS VIEW ===== -->
+            <div id="view-weather-alerts" class="view-content hidden">
+                <div class="filters-bar glass-card" style="margin-bottom:1.2rem;">
+                    <select id="wa-project-filter" class="form-select" style="width:auto;flex:1;max-width:320px;">
+                        <option value="">— Select Project —</option>
+                    </select>
+                    <button class="btn btn-primary btn-sm" onclick="loadWeatherAlerts()">
+                        <i class='bx bx-refresh'></i> Check Alerts
+                    </button>
+                </div>
+                <div class="wa-forecast glass-card" style="margin-bottom:1.2rem;">
+                    <h3 style="margin-bottom:1rem;"><i class='bx bx-cloud'></i> 7-Day Weather Forecast</h3>
+                    <div id="wa-forecast-grid" class="wa-forecast-grid">
+                        <div class="empty-state" style="grid-column:1/-1;">
+                            <i class='bx bx-cloud-lightning'></i>
+                            <p>Select a project to view weather forecast and task alerts.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <h3 style="margin-bottom:1rem;"><i class='bx bx-error-alt' style="color:var(--accent-warning);"></i>
+                        Weather-Sensitive Task Alerts</h3>
+                    <div id="wa-alerts-container">
+                        <div class="empty-state">
+                            <p class="text-muted">No alerts to display. Mark tasks as weather-sensitive to receive smart
+                                alerts.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== SUSTAINABILITY VIEW ===== -->
+            <div id="view-sustainability" class="view-content hidden">
+                <div class="filters-bar glass-card" style="margin-bottom:1.2rem;">
+                    <select id="sus-project-filter" class="form-select" style="width:auto;flex:1;max-width:320px;">
+                        <option value="">— Select Project —</option>
+                    </select>
+                    <button class="btn btn-primary btn-sm" onclick="loadSustainability()">
+                        <i class='bx bx-analyse'></i> Analyze
+                    </button>
+                </div>
+                <div id="sus-dashboard" class="hidden">
+                    <div class="stats-grid" style="margin-bottom:1.5rem;">
+                        <div class="stat-card glass-card">
+                            <div class="stat-icon bg-green"><i class='bx bx-leaf'></i></div>
+                            <div class="stat-details">
+                                <h3>Sustainability Grade</h3>
+                                <h2 id="sus-grade" style="font-size:2.5rem;">—</h2>
+                                <div class="stat-change" id="sus-label"></div>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-card">
+                            <div class="stat-icon bg-orange"><i class='bx bx-cloud'></i></div>
+                            <div class="stat-details">
+                                <h3>Total CO₂</h3>
+                                <h2 id="sus-total-co2">0 kg</h2>
+                                <div class="stat-change" id="sus-co2-per-lakh"></div>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-card">
+                            <div class="stat-icon bg-blue"><i class='bx bx-package'></i></div>
+                            <div class="stat-details">
+                                <h3>Material CO₂</h3>
+                                <h2 id="sus-mat-co2">0 kg</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-card">
+                            <div class="stat-icon bg-red"><i class='bx bx-wrench'></i></div>
+                            <div class="stat-details">
+                                <h3>Equipment CO₂</h3>
+                                <h2 id="sus-equip-co2">0 kg</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-card">
+                            <div class="stat-icon bg-green"><i class='bx bx-tree'></i></div>
+                            <div class="stat-details">
+                                <h3>Trees to Offset</h3>
+                                <h2 id="sus-trees">0</h2>
+                                <div class="stat-change">trees/year needed</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div class="glass-card">
+                            <h3 style="margin-bottom:1rem;"><i class='bx bx-package'></i> Material CO₂ Breakdown</h3>
+                            <div id="sus-mat-breakdown"></div>
+                        </div>
+                        <div class="glass-card">
+                            <h3 style="margin-bottom:1rem;"><i class='bx bx-wrench'></i> Equipment CO₂ Breakdown</h3>
+                            <div id="sus-equip-breakdown"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sus-empty" class="empty-state glass-card">
+                    <i class='bx bx-leaf' style="font-size:3rem;color:#10b981;"></i>
+                    <h3>Carbon Footprint Tracker</h3>
+                    <p class="text-muted" style="margin-top:0.5rem;">Select a project and click Analyze to see its
+                        carbon footprint and sustainability score.</p>
+                </div>
+            </div>
+
+            <!-- ===== GEOFENCE VIEW ===== -->
+            <div id="view-geofence" class="view-content hidden">
+                <div class="filters-bar glass-card" style="margin-bottom:1.2rem;">
+                    <select id="gf-project-filter" class="form-select" style="width:auto;flex:1;max-width:320px;">
+                        <option value="">— Select Project —</option>
+                    </select>
+                    <button class="btn btn-primary btn-sm" onclick="loadGeofence()">
+                        <i class='bx bx-map-pin'></i> Check Status
+                    </button>
+                </div>
+                <div id="gf-dashboard" class="hidden">
+                    <div class="stats-grid" style="margin-bottom:1.5rem;">
+                        <div class="stat-card glass-card">
+                            <div class="stat-icon bg-blue"><i class='bx bx-map'></i></div>
+                            <div class="stat-details">
+                                <h3>Site Location</h3>
+                                <h2 id="gf-site-loc" style="font-size:1rem;">—</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-card">
+                            <div class="stat-icon bg-orange"><i class='bx bx-target-lock'></i></div>
+                            <div class="stat-details">
+                                <h3>Fence Radius</h3>
+                                <h2 id="gf-radius">— m</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-card">
+                            <div class="stat-icon bg-green"><i class='bx bx-check-shield'></i></div>
+                            <div class="stat-details">
+                                <h3>Within Fence</h3>
+                                <h2 id="gf-safe-count">0</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-card">
+                            <div class="stat-icon bg-red"><i class='bx bx-error'></i></div>
+                            <div class="stat-details">
+                                <h3>Breached</h3>
+                                <h2 id="gf-breach-count">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-card">
+                        <h3 style="margin-bottom:1rem;"><i class='bx bx-cog'></i> Equipment Geo-fence Status</h3>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Equipment</th>
+                                        <th>Last Latitude</th>
+                                        <th>Last Longitude</th>
+                                        <th>Distance (m)</th>
+                                        <th>Status</th>
+                                        <th>Last Ping</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="gf-equipment-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="glass-card" style="margin-top:1.2rem;">
+                        <h3 style="margin-bottom:1rem;"><i class='bx bx-broadcast'></i> Simulate GPS Ping</h3>
+                        <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end;">
+                            <div class="input-group" style="flex:1;min-width:150px;">
+                                <label>Equipment ID</label>
+                                <input type="number" id="gf-ping-eq-id" class="form-control" placeholder="Equipment ID">
+                            </div>
+                            <div class="input-group" style="flex:1;min-width:150px;">
+                                <label>Latitude</label>
+                                <input type="number" id="gf-ping-lat" class="form-control" step="0.000001"
+                                    placeholder="19.076">
+                            </div>
+                            <div class="input-group" style="flex:1;min-width:150px;">
+                                <label>Longitude</label>
+                                <input type="number" id="gf-ping-lon" class="form-control" step="0.000001"
+                                    placeholder="72.8777">
+                            </div>
+                            <button class="btn btn-danger btn-sm" onclick="simulateGPSPing()"
+                                style="height:fit-content;">
+                                <i class='bx bx-broadcast'></i> Send Ping
+                            </button>
+                        </div>
+                        <div id="gf-ping-result" style="margin-top:1rem;"></div>
+                    </div>
+                </div>
+                <div id="gf-empty" class="empty-state glass-card">
+                    <i class='bx bx-map-pin' style="font-size:3rem;color:var(--accent-blue);"></i>
+                    <h3>Equipment Geo-fencing</h3>
+                    <p class="text-muted" style="margin-top:0.5rem;">Select a project to monitor equipment locations and
+                        geo-fence breaches. Configure latitude, longitude, and radius on your project.</p>
+                </div>
+            </div>
+
+            <!-- ===== AI CHAT VIEW ===== -->
+            <div id="view-ai-chat" class="view-content hidden">
+                <div class="ai-chat-layout">
+                    <div class="ai-chat-container glass-card">
+                        <div class="ai-chat-header">
+                            <div style="display:flex;align-items:center;gap:0.8rem;">
+                                <div class="ai-chat-avatar"><i class='bx bx-bot'></i></div>
+                                <div>
+                                    <h3 style="margin:0;">CivilTrack AI Assistant</h3>
+                                    <p class="text-muted" style="font-size:0.75rem;margin:0;">Ask anything about
+                                        construction, IS codes, safety, or project management</p>
+                                </div>
+                            </div>
+                            <span class="badge" id="ai-chat-source" style="display:none;">AI</span>
+                        </div>
+                        <div class="ai-chat-messages" id="ai-chat-messages">
+                            <div class="ai-chat-msg ai-msg">
+                                <div class="ai-chat-msg-content">
+                                    <strong>CivilTrack AI</strong>
+                                    <p>Hello! I'm your AI construction assistant. Ask me anything about:</p>
+                                    <ul style="margin:0.5rem 0;padding-left:1.2rem;">
+                                        <li>IS codes & standards</li>
+                                        <li>Mix design & material selection</li>
+                                        <li>Safety protocols & best practices</li>
+                                        <li>Structural analysis concepts</li>
+                                        <li>Construction techniques</li>
+                                    </ul>
+                                    <p>If the AI is unavailable, I'll automatically search the web for answers! 🌐</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ai-chat-input-bar">
+                            <input type="text" id="ai-chat-input" class="form-control"
+                                placeholder="Ask a construction question..."
+                                onkeydown="if(event.key==='Enter')sendAIChat()">
+                            <button class="btn btn-primary" onclick="sendAIChat()">
+                                <i class='bx bx-send'></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- ===== USER MANAGEMENT VIEW ===== -->
             <div id="view-users" class="view-content hidden">
                 <div class="glass-card">
@@ -981,6 +1783,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="/js/api.js?v=4"></script>
     <script src="/js/app.js?v=4"></script>
 </body>

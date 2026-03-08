@@ -45,6 +45,12 @@ public class Project {
     @Column(name = "completion_percentage")
     private Double completionPercentage = 0.0;
 
+    private Double latitude;
+    private Double longitude;
+
+    @Column(name = "geofence_radius")
+    private Double geofenceRadius;
+
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     @com.fasterxml.jackson.annotation.JsonManagedReference(value = "project-tasks")
     private List<Task> tasks = new ArrayList<>();
@@ -192,6 +198,30 @@ public class Project {
 
     public void setIssues(List<com.civil.scheduler.entity.Issue> issues) {
         this.issues = issues;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getGeofenceRadius() {
+        return geofenceRadius;
+    }
+
+    public void setGeofenceRadius(Double geofenceRadius) {
+        this.geofenceRadius = geofenceRadius;
     }
 
     @Transient
